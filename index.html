@@ -4,64 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hrossaþjálfun</title>
-    
-    <!-- PWA Meta tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Hrossaþjálfun">
-    <meta name="theme-color" content="#3b82f6">
-    
-    <!-- Tailwind CSS -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-        }
-    </style>
 </head>
 <body>
     <div id="root"></div>
 
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
     <script type="text/babel">
         const { useState, useEffect } = React;
-
-        // Icons
+        
+        // Lucide icons as inline SVG components
         const Camera = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                 <circle cx="12" cy="13" r="4"></circle>
             </svg>
         );
 
         const Plus = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
         );
 
         const Edit2 = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
             </svg>
         );
 
         const Trash2 = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
             </svg>
         );
 
         const Download = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -69,7 +54,7 @@
         );
 
         const Upload = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="17 8 12 3 7 8"></polyline>
                 <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -77,13 +62,13 @@
         );
 
         const Check = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         );
 
         const Clock = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
@@ -98,194 +83,374 @@
           const [confirmDelete, setConfirmDelete] = useState(null);
           const [language, setLanguage] = useState('IS');
 
-          const trainingTypes = ['Tölt', 'Brokk', 'Fet', 'Stökk', 'Skeið', 'Vinna í reiðhöll', 'Útreiðar', 'Rekstur', 'Annað'];
+          const trainingTypes = [
+            'Tölt', 'Brokk', 'Fet', 'Stökk', 'Skeið',
+            'Vinna í reiðhöll', 'Útreiðar', 'Rekstur', 'Annað'
+          ];
 
+          // Translations
           const translations = {
             IS: {
-              title: 'Hrossaþjálfun', export: 'Export', import: 'Import', addHorse: 'Skrá nýtt hross',
-              recordings: 'skráningar', recording: 'skráning', needsShoeing: 'Þarf að járna',
-              name: 'Nafn', isNumber: 'IS-númer', image: 'Mynd', save: 'Vista', cancel: 'Hætta við',
-              delete: 'Eyða', back: 'Til baka', shoeing: 'Járning', recordShoeing: 'Skrá járningu',
-              newTraining: 'Ný þjálfunarskráning', date: 'Dagsetning', type: 'Tegund',
-              selectType: 'Veldu tegund', notes: 'Athugasemdir', time: 'Tími (mínútur)',
-              otherTime: 'Annar tími', recordTraining: 'Skrá þjálfun', trainings: 'Þjálfunarskráningar',
-              confirmDelete: 'Staðfesta eyðingu', yesDelete: 'JÁ, EYÐA',
-              confirmDeleteHorse: 'Ertu viss um að þú viljir eyða þessu rossi?',
+              title: 'Hrossaþjálfun',
+              export: 'Export',
+              import: 'Import',
+              addHorse: 'Skrá nýtt hross',
+              recordings: 'skráningar',
+              recording: 'skráning',
+              needsShoeing: 'Þarf að járna',
+              weeks: 'vikur',
+              week: 'vika',
+              name: 'Nafn',
+              isNumber: 'IS-númer',
+              image: 'Mynd',
+              save: 'Vista',
+              cancel: 'Hætta við',
+              edit: 'Breyta',
+              delete: 'Eyða',
+              back: 'Til baka',
+              shoeing: 'Járning',
+              recordShoeing: 'Skrá járningu',
+              newTraining: 'Ný þjálfunarskráning',
+              date: 'Dagsetning',
+              type: 'Tegund',
+              selectType: 'Veldu tegund',
+              notes: 'Athugasemdir',
+              time: 'Tími (mínútur)',
+              otherTime: 'Annar tími',
+              recordTraining: 'Skrá þjálfun',
+              trainings: 'Þjálfunarskráningar',
+              confirmDelete: 'Staðfesta eyðingu',
+              confirmDeleteHorse: 'Ertu viss um að þú viljir eyða þessu rossi? Þetta mun eyða öllum gögnum um rossið.',
               confirmDeleteShoeing: 'Ertu viss um að þú viljir eyða þessari járningu?',
               confirmDeleteTraining: 'Ertu viss um að þú viljir eyða þessari þjálfunarskráningu?',
-              exportBasic: 'Nafn, IS-númer, Mynd', exportAll: 'Allt (með þjálfun)',
-              chooseImage: 'Velja mynd', fillRequired: 'Vinsamlegast fylltu út nafn og IS-númer',
+              yesDelete: 'JÁ, EYÐA',
+              exportBasic: 'Nafn, IS-númer, Mynd',
+              exportAll: 'Allt (með þjálfun)',
+              chooseImage: 'Velja mynd',
+              fillRequired: 'Vinsamlegast fylltu út nafn og IS-númer',
               fillDateType: 'Vinsamlegast fylltu út dagsetningu og tegund',
-              editHorse: 'Breyta rossi', addNewHorse: 'Skrá nýtt hross', enterMinutes: 'Sláðu inn mínútur'
+              editHorse: 'Breyta rossi',
+              addNewHorse: 'Skrá nýtt hross',
+              enterMinutes: 'Sláðu inn mínútur',
+              deleteImage: 'Eyða mynd',
+              confirmDeleteImage: 'Ertu viss um að þú viljir eyða þessari mynd?'
             },
             EN: {
-              title: 'Horse Training', export: 'Export', import: 'Import', addHorse: 'Add New Horse',
-              recordings: 'recordings', recording: 'recording', needsShoeing: 'Needs shoeing',
-              name: 'Name', isNumber: 'IS Number', image: 'Image', save: 'Save', cancel: 'Cancel',
-              delete: 'Delete', back: 'Back', shoeing: 'Shoeing', recordShoeing: 'Record Shoeing',
-              newTraining: 'New Training', date: 'Date', type: 'Type', selectType: 'Select type',
-              notes: 'Notes', time: 'Time (minutes)', otherTime: 'Other time',
-              recordTraining: 'Record Training', trainings: 'Training Records',
-              confirmDelete: 'Confirm Deletion', yesDelete: 'YES, DELETE',
-              confirmDeleteHorse: 'Are you sure you want to delete this horse?',
-              confirmDeleteShoeing: 'Are you sure you want to delete this shoeing?',
-              confirmDeleteTraining: 'Are you sure you want to delete this training?',
-              exportBasic: 'Name, IS Number, Image', exportAll: 'All (with training)',
-              chooseImage: 'Choose image', fillRequired: 'Please fill in name and IS number',
-              fillDateType: 'Please fill in date and type', editHorse: 'Edit Horse',
-              addNewHorse: 'Add New Horse', enterMinutes: 'Enter minutes'
+              title: 'Horse Training',
+              export: 'Export',
+              import: 'Import',
+              addHorse: 'Add New Horse',
+              recordings: 'recordings',
+              recording: 'recording',
+              needsShoeing: 'Needs shoeing',
+              weeks: 'weeks',
+              week: 'week',
+              name: 'Name',
+              isNumber: 'IS Number',
+              image: 'Image',
+              save: 'Save',
+              cancel: 'Cancel',
+              edit: 'Edit',
+              delete: 'Delete',
+              back: 'Back',
+              shoeing: 'Shoeing',
+              recordShoeing: 'Record Shoeing',
+              newTraining: 'New Training Record',
+              date: 'Date',
+              type: 'Type',
+              selectType: 'Select type',
+              notes: 'Notes',
+              time: 'Time (minutes)',
+              otherTime: 'Other time',
+              recordTraining: 'Record Training',
+              trainings: 'Training Records',
+              confirmDelete: 'Confirm Deletion',
+              confirmDeleteHorse: 'Are you sure you want to delete this horse? This will delete all data about the horse.',
+              confirmDeleteShoeing: 'Are you sure you want to delete this shoeing record?',
+              confirmDeleteTraining: 'Are you sure you want to delete this training record?',
+              yesDelete: 'YES, DELETE',
+              exportBasic: 'Name, IS Number, Image',
+              exportAll: 'All (with training)',
+              chooseImage: 'Choose image',
+              fillRequired: 'Please fill in name and IS number',
+              fillDateType: 'Please fill in date and type',
+              editHorse: 'Edit Horse',
+              addNewHorse: 'Add New Horse',
+              enterMinutes: 'Enter minutes',
+              deleteImage: 'Delete image',
+              confirmDeleteImage: 'Are you sure you want to delete this image?'
             },
             DE: {
-              title: 'Pferdetraining', export: 'Exportieren', import: 'Importieren',
-              addHorse: 'Neues Pferd', recordings: 'Aufzeichnungen', recording: 'Aufzeichnung',
-              needsShoeing: 'Beschlagen nötig', name: 'Name', isNumber: 'IS-Nummer',
-              image: 'Bild', save: 'Speichern', cancel: 'Abbrechen', delete: 'Löschen',
-              back: 'Zurück', shoeing: 'Beschlag', recordShoeing: 'Beschlag aufzeichnen',
-              newTraining: 'Neues Training', date: 'Datum', type: 'Typ', selectType: 'Typ auswählen',
-              notes: 'Notizen', time: 'Zeit (Minuten)', otherTime: 'Andere Zeit',
-              recordTraining: 'Training aufzeichnen', trainings: 'Trainingsaufzeichnungen',
-              confirmDelete: 'Löschen bestätigen', yesDelete: 'JA, LÖSCHEN',
-              confirmDeleteHorse: 'Möchten Sie dieses Pferd wirklich löschen?',
-              confirmDeleteShoeing: 'Möchten Sie diesen Beschlag wirklich löschen?',
-              confirmDeleteTraining: 'Möchten Sie dieses Training wirklich löschen?',
-              exportBasic: 'Name, IS-Nummer, Bild', exportAll: 'Alle (mit Training)',
-              chooseImage: 'Bild auswählen', fillRequired: 'Bitte Name und IS-Nummer ausfüllen',
-              fillDateType: 'Bitte Datum und Typ ausfüllen', editHorse: 'Pferd bearbeiten',
-              addNewHorse: 'Neues Pferd', enterMinutes: 'Minuten eingeben'
+              title: 'Pferdetraining',
+              export: 'Exportieren',
+              import: 'Importieren',
+              addHorse: 'Neues Pferd hinzufügen',
+              recordings: 'Aufzeichnungen',
+              recording: 'Aufzeichnung',
+              needsShoeing: 'Beschlagen nötig',
+              weeks: 'Wochen',
+              week: 'Woche',
+              name: 'Name',
+              isNumber: 'IS-Nummer',
+              image: 'Bild',
+              save: 'Speichern',
+              cancel: 'Abbrechen',
+              edit: 'Bearbeiten',
+              delete: 'Löschen',
+              back: 'Zurück',
+              shoeing: 'Beschlag',
+              recordShoeing: 'Beschlag aufzeichnen',
+              newTraining: 'Neue Trainingsaufzeichnung',
+              date: 'Datum',
+              type: 'Typ',
+              selectType: 'Typ auswählen',
+              notes: 'Notizen',
+              time: 'Zeit (Minuten)',
+              otherTime: 'Andere Zeit',
+              recordTraining: 'Training aufzeichnen',
+              trainings: 'Trainingsaufzeichnungen',
+              confirmDelete: 'Löschen bestätigen',
+              confirmDeleteHorse: 'Möchten Sie dieses Pferd wirklich löschen? Dies löscht alle Daten über das Pferd.',
+              confirmDeleteShoeing: 'Möchten Sie diese Beschlagaufzeichnung wirklich löschen?',
+              confirmDeleteTraining: 'Möchten Sie diese Trainingsaufzeichnung wirklich löschen?',
+              yesDelete: 'JA, LÖSCHEN',
+              exportBasic: 'Name, IS-Nummer, Bild',
+              exportAll: 'Alle (mit Training)',
+              chooseImage: 'Bild auswählen',
+              fillRequired: 'Bitte Name und IS-Nummer ausfüllen',
+              fillDateType: 'Bitte Datum und Typ ausfüllen',
+              editHorse: 'Pferd bearbeiten',
+              addNewHorse: 'Neues Pferd hinzufügen',
+              enterMinutes: 'Minuten eingeben',
+              deleteImage: 'Bild löschen',
+              confirmDeleteImage: 'Möchten Sie dieses Bild wirklich löschen?'
             }
           };
 
           const t = translations[language];
 
+          // Load from localStorage
           useEffect(() => {
             try {
               const saved = localStorage.getItem('horses');
-              if (saved) setHorses(JSON.parse(saved));
+              if (saved) {
+                const parsed = JSON.parse(saved);
+                setHorses(parsed);
+                console.log('Loaded horses:', parsed.length);
+              } else {
+                const sessionSaved = sessionStorage.getItem('horses');
+                if (sessionSaved) {
+                  const parsed = JSON.parse(sessionSaved);
+                  setHorses(parsed);
+                  console.log('Loaded from session:', parsed.length);
+                }
+              }
             } catch (error) {
-              console.error('Error loading:', error);
+              console.error('Error loading data:', error);
             }
           }, []);
 
+          // Save to localStorage and sessionStorage
           useEffect(() => {
             try {
-              localStorage.setItem('horses', JSON.stringify(horses));
+              const data = JSON.stringify(horses);
+              localStorage.setItem('horses', data);
+              sessionStorage.setItem('horses', data);
+              console.log('Saved horses:', horses.length);
             } catch (error) {
-              console.error('Error saving:', error);
+              console.error('Error saving data:', error);
             }
           }, [horses]);
 
-          const getCurrentHorse = () => horses.find(h => h.id === selectedHorseId);
+          const getCurrentHorse = () => {
+            return horses.find(h => h.id === selectedHorseId);
+          };
 
           const addHorse = (horseData) => {
-            setHorses([...horses, { ...horseData, id: Date.now(), trainings: [], shoeings: [] }]);
+            const newHorse = {
+              ...horseData,
+              id: Date.now(),
+              trainings: [],
+              shoeings: []
+            };
+            setHorses([...horses, newHorse]);
             setCurrentView('list');
           };
 
-          const updateHorse = (horseId, updates) => {
-            setHorses(horses.map(h => h.id === horseId ? { ...h, ...updates } : h));
+          const updateHorse = (id, horseData) => {
+            setHorses(horses.map(h => h.id === id ? { ...h, ...horseData } : h));
             setEditingHorseId(null);
           };
 
-          const requestDeleteHorse = (horseId) => setConfirmDelete({ type: 'horse', horseId });
-
-          const deleteHorse = (horseId) => {
-            setHorses(horses.filter(h => h.id !== horseId));
-            setCurrentView('list');
-            setSelectedHorseId(null);
+          const deleteHorse = (id) => {
+            setHorses(horses.filter(h => h.id !== id));
             setConfirmDelete(null);
+            setCurrentView('list');
+          };
+
+          const requestDeleteHorse = (id) => {
+            setConfirmDelete({ type: 'horse', horseId: id });
           };
 
           const addShoeing = (horseId, date) => {
-            setHorses(horses.map(h => h.id === horseId ? 
-              { ...h, shoeings: [...(h.shoeings || []), { id: Date.now(), date }] } : h));
+            setHorses(horses.map(h => 
+              h.id === horseId 
+                ? { ...h, shoeings: [...(h.shoeings || []), { id: Date.now(), date }] }
+                : h
+            ));
           };
 
-          const requestDeleteShoeing = (horseId, shoeingId) => 
-            setConfirmDelete({ type: 'shoeing', horseId, itemId: shoeingId });
-
           const deleteShoeing = (horseId, shoeingId) => {
-            setHorses(horses.map(h => h.id === horseId ? 
-              { ...h, shoeings: h.shoeings.filter(s => s.id !== shoeingId) } : h));
+            setHorses(horses.map(h => 
+              h.id === horseId 
+                ? { ...h, shoeings: h.shoeings.filter(s => s.id !== shoeingId) }
+                : h
+            ));
             setConfirmDelete(null);
+          };
+
+          const requestDeleteShoeing = (horseId, shoeingId) => {
+            setConfirmDelete({ type: 'shoeing', horseId, itemId: shoeingId });
           };
 
           const addTraining = (horseId, training) => {
-            setHorses(horses.map(h => h.id === horseId ? 
-              { ...h, trainings: [...(h.trainings || []), { ...training, id: Date.now() }] } : h));
+            setHorses(horses.map(h => 
+              h.id === horseId 
+                ? { ...h, trainings: [...(h.trainings || []), { ...training, id: Date.now() }] }
+                : h
+            ));
           };
 
-          const updateTraining = (horseId, trainingId, updates) => {
-            setHorses(horses.map(h => h.id === horseId ? 
-              { ...h, trainings: h.trainings.map(t => t.id === trainingId ? { ...t, ...updates } : t) } : h));
+          const updateTraining = (horseId, trainingId, updatedTraining) => {
+            setHorses(horses.map(h => 
+              h.id === horseId 
+                ? { 
+                    ...h, 
+                    trainings: h.trainings.map(t => 
+                      t.id === trainingId ? { ...t, ...updatedTraining } : t
+                    ) 
+                  }
+                : h
+            ));
           };
-
-          const requestDeleteTraining = (horseId, trainingId) => 
-            setConfirmDelete({ type: 'training', horseId, itemId: trainingId });
 
           const deleteTraining = (horseId, trainingId) => {
-            setHorses(horses.map(h => h.id === horseId ? 
-              { ...h, trainings: h.trainings.filter(t => t.id !== trainingId) } : h));
+            setHorses(horses.map(h => 
+              h.id === horseId 
+                ? { ...h, trainings: h.trainings.filter(t => t.id !== trainingId) }
+                : h
+            ));
             setConfirmDelete(null);
           };
 
+          const requestDeleteTraining = (horseId, trainingId) => {
+            setConfirmDelete({ type: 'training', horseId, itemId: trainingId });
+          };
+
           const getShoingStatus = (shoeings) => {
-            if (!shoeings || !shoeings.length) return null;
-            const weeks = Math.floor((new Date() - new Date(shoeings[shoeings.length - 1].date)) / (7 * 24 * 60 * 60 * 1000));
-            return weeks >= 8 ? 'red' : weeks >= 6 ? 'green' : null;
+            if (!shoeings || shoeings.length === 0) return null;
+            
+            const lastShoeing = new Date(Math.max(...shoeings.map(s => new Date(s.date))));
+            const today = new Date();
+            const weeksDiff = Math.floor((today - lastShoeing) / (7 * 24 * 60 * 60 * 1000));
+            
+            if (weeksDiff >= 8) return 'red';
+            if (weeksDiff >= 6) return 'yellow';
+            return 'green';
           };
 
           const getWeeksSinceShoeing = (shoeings) => {
-            if (!shoeings || !shoeings.length) return null;
-            return Math.floor((new Date() - new Date(shoeings[shoeings.length - 1].date)) / (7 * 24 * 60 * 60 * 1000));
+            if (!shoeings || shoeings.length === 0) return null;
+            
+            const lastShoeing = new Date(Math.max(...shoeings.map(s => new Date(s.date))));
+            const today = new Date();
+            const weeksDiff = Math.floor((today - lastShoeing) / (7 * 24 * 60 * 60 * 1000));
+            
+            return weeksDiff;
           };
 
           const getThisWeekTrainingMinutes = (trainings) => {
-            if (!trainings || !trainings.length) return 0;
+            if (!trainings || trainings.length === 0) return 0;
+            
             const today = new Date();
             const weekStart = new Date(today);
             const dayOfWeek = today.getDay();
-            weekStart.setDate(today.getDate() + (dayOfWeek === 0 ? -6 : 1 - dayOfWeek));
+            const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            weekStart.setDate(today.getDate() + diff);
             weekStart.setHours(0, 0, 0, 0);
-            return trainings.filter(t => new Date(t.date) >= weekStart && new Date(t.date) <= today)
-              .reduce((sum, t) => sum + (parseInt(t.duration) || 0), 0);
+            
+            const thisWeekTrainings = trainings.filter(t => {
+              const trainingDate = new Date(t.date);
+              return trainingDate >= weekStart && trainingDate <= today;
+            });
+            
+            const totalMinutes = thisWeekTrainings.reduce((sum, t) => {
+              return sum + (parseInt(t.duration) || 0);
+            }, 0);
+            
+            return totalMinutes;
           };
 
           const getTotalTrainingMinutes = (trainings) => {
-            if (!trainings || !trainings.length) return 0;
-            return trainings.reduce((sum, t) => sum + (parseInt(t.duration) || 0), 0);
+            if (!trainings || trainings.length === 0) return 0;
+            
+            const totalMinutes = trainings.reduce((sum, t) => {
+              return sum + (parseInt(t.duration) || 0);
+            }, 0);
+            
+            return totalMinutes;
           };
 
           const getTrainingDateRange = (trainings) => {
-            if (!trainings || !trainings.length) return null;
+            if (!trainings || trainings.length === 0) return null;
+            
             const dates = trainings.map(t => new Date(t.date)).sort((a, b) => a - b);
-            return { firstDate: dates[0], lastDate: dates[dates.length - 1] };
+            const firstDate = dates[0];
+            const lastDate = dates[dates.length - 1];
+            
+            return { firstDate, lastDate };
           };
 
           const getWeekDaysStatus = (trainings) => {
             const today = new Date();
             const weekStart = new Date(today);
             const dayOfWeek = today.getDay();
-            weekStart.setDate(today.getDate() + (dayOfWeek === 0 ? -6 : 1 - dayOfWeek));
+            const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+            weekStart.setDate(today.getDate() + diff);
             weekStart.setHours(0, 0, 0, 0);
             
-            return Array.from({ length: 7 }, (_, i) => {
+            const daysStatus = [];
+            for (let i = 0; i < 7; i++) {
               const day = new Date(weekStart);
               day.setDate(weekStart.getDate() + i);
-              return {
+              
+              const hasTraining = trainings && trainings.some(t => {
+                const trainingDate = new Date(t.date);
+                return trainingDate.toDateString() === day.toDateString();
+              });
+              
+              const isFuture = day > today;
+              
+              daysStatus.push({
                 date: day,
-                hasTraining: trainings && trainings.some(t => new Date(t.date).toDateString() === day.toDateString()),
-                isFuture: day > today
-              };
-            });
+                hasTraining,
+                isFuture
+              });
+            }
+            
+            return daysStatus;
           };
 
           const exportData = (includeAll) => {
-            const data = includeAll ? horses : horses.map(h => ({ name: h.name, isNumber: h.isNumber, image: h.image }));
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const dataToExport = includeAll 
+              ? horses 
+              : horses.map(h => ({ name: h.name, isNumber: h.isNumber, image: h.image }));
+            
+            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `hross-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `hross-data-${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -300,10 +465,12 @@
               reader.onload = (event) => {
                 try {
                   const imported = JSON.parse(event.target.result);
-                  if (window.confirm('Flytja inn gögn?')) {
+                  if (window.confirm('Ertu viss um að þú viljir flytja inn gögn? Þetta mun bæta við núverandi gögn.')) {
                     setHorses([...horses, ...imported.map(h => ({ ...h, id: Date.now() + Math.random() }))]);
                   }
-                } catch { alert('Villa við lestur'); }
+                } catch (error) {
+                  alert('Villa við að lesa skrá');
+                }
               };
               reader.readAsText(file);
             }
@@ -311,47 +478,138 @@
 
           const HorseForm = ({ horse, onCancel }) => {
             const [formData, setFormData] = useState(horse || { name: '', isNumber: '', image: '' });
+            const [imageHovered, setImageHovered] = useState(false);
+            const [confirmImageDelete, setConfirmImageDelete] = useState(false);
 
             const handleImageUpload = (e) => {
               const file = e.target.files[0];
               if (file) {
                 const reader = new FileReader();
-                reader.onloadend = () => setFormData({ ...formData, image: reader.result });
+                reader.onloadend = () => {
+                  setFormData({ ...formData, image: reader.result });
+                };
                 reader.readAsDataURL(file);
+              }
+            };
+
+            const handleDeleteImage = () => {
+              setConfirmImageDelete(false);
+              setFormData({ ...formData, image: '' });
+              setImageHovered(false);
+            };
+
+            const handleSave = () => {
+              if (formData.name && formData.isNumber) {
+                if (horse) {
+                  updateHorse(horse.id, formData);
+                } else {
+                  addHorse(formData);
+                }
+              } else {
+                alert(t.fillRequired);
               }
             };
 
             return (
               <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto">
+                {confirmImageDelete && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-md w-full">
+                      <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">{t.confirmDelete}</h3>
+                      <p className="mb-4 sm:mb-6 text-sm sm:text-base">
+                        {t.confirmDeleteImage}
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                        <button
+                          onClick={handleDeleteImage}
+                          className="bg-red-500 text-white px-4 sm:px-6 py-2 rounded hover:bg-red-600 font-bold text-sm sm:text-base"
+                        >
+                          {t.yesDelete}
+                        </button>
+                        <button
+                          onClick={() => setConfirmImageDelete(false)}
+                          className="bg-gray-300 px-4 sm:px-6 py-2 rounded hover:bg-gray-400 text-sm sm:text-base"
+                        >
+                          {t.cancel}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <h2 className="text-2xl font-bold mb-6">{horse ? t.editHorse : t.addNewHorse}</h2>
+                
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">{t.name}</label>
-                    <input type="text" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full p-2 border rounded" placeholder={t.name} />
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full p-2 border rounded"
+                      placeholder={t.name}
+                    />
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium mb-2">{t.isNumber}</label>
-                    <input type="text" value={formData.isNumber} onChange={(e) => setFormData({ ...formData, isNumber: e.target.value })}
-                      className="w-full p-2 border rounded" placeholder={t.isNumber} />
+                    <input
+                      type="text"
+                      value={formData.isNumber}
+                      onChange={(e) => setFormData({ ...formData, isNumber: e.target.value })}
+                      className="w-full p-2 border rounded"
+                      placeholder={t.isNumber}
+                    />
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium mb-2">{t.image}</label>
                     <div className="flex items-center gap-4">
-                      <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="img-up" />
-                      <label htmlFor="img-up" className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-600">
-                        <Camera size={20} /> {t.chooseImage}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <label htmlFor="image-upload" className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-blue-600">
+                        <Camera size={20} />
+                        {t.chooseImage}
                       </label>
-                      {formData.image && <img src={formData.image} alt="Preview" className="w-20 h-20 object-cover rounded" />}
+                      {formData.image && (
+                        <div 
+                          className="relative"
+                          onMouseEnter={() => setImageHovered(true)}
+                          onMouseLeave={() => setImageHovered(false)}
+                        >
+                          <img src={formData.image} alt="Preview" className="w-20 h-20 object-cover rounded" />
+                          {imageHovered && (
+                            <button
+                              onClick={() => setConfirmImageDelete(true)}
+                              className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transform translate-x-1 -translate-y-1"
+                              title={t.deleteImage}
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
+
                   <div className="flex gap-2 pt-4">
-                    <button onClick={() => {
-                      if (formData.name && formData.isNumber) {
-                        horse ? updateHorse(horse.id, formData) : addHorse(formData);
-                      } else alert(t.fillRequired);
-                    }} className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">{t.save}</button>
-                    <button onClick={onCancel} className="bg-gray-300 px-6 py-2 rounded hover:bg-gray-400">{t.cancel}</button>
+                    <button
+                      onClick={handleSave}
+                      className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
+                    >
+                      {t.save}
+                    </button>
+                    <button
+                      onClick={onCancel}
+                      className="bg-gray-300 px-6 py-2 rounded hover:bg-gray-400"
+                    >
+                      {t.cancel}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -371,323 +629,547 @@
             const shoingStatus = getShoingStatus(horse.shoeings);
             const thisWeekMinutes = getThisWeekTrainingMinutes(horse.trainings);
             const totalMinutes = getTotalTrainingMinutes(horse.trainings);
-            const weekDays = getWeekDaysStatus(horse.trainings);
+
+            const handleAddShoeing = () => {
+              if (newShoeing) {
+                addShoeing(horse.id, newShoeing);
+                setNewShoeing('');
+              }
+            };
+
+            const handleAddTraining = () => {
+              if (newTraining.date && newTraining.type) {
+                const duration = showCustomDuration ? customDuration : newTraining.duration;
+                addTraining(horse.id, { ...newTraining, duration });
+                setNewTraining({ date: '', type: '', notes: '', duration: '' });
+                setCustomDuration('');
+                setShowCustomDuration(false);
+              } else {
+                alert(t.fillDateType);
+              }
+            };
+
+            const handleEditTraining = (training) => {
+              if (editingTrainingId === training.id) {
+                setEditingTrainingId(null);
+              } else {
+                setEditingTrainingId(training.id);
+              }
+            };
+
+            const handleUpdateTraining = (trainingId, field, value) => {
+              updateTraining(horse.id, trainingId, { [field]: value });
+            };
 
             return (
-              <div className="max-w-4xl mx-auto">
-                <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg mb-4 sm:mb-6">
-                  <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-4">
-                    <div className="flex gap-3 sm:gap-4 w-full sm:w-auto">
-                      {horse.image && <img src={horse.image} alt={horse.name} className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg" />}
-                      <div className="flex-1">
-                        <h2 className="text-2xl sm:text-3xl font-bold">{horse.name}</h2>
-                        <p className="text-gray-600 text-sm sm:text-base">{t.isNumber}: {horse.isNumber}</p>
-                        <div className="mt-2 flex flex-col gap-1">
-                          <div className="flex gap-0.5 sm:gap-1">
-                            {weekDays.map((day, idx) => (
-                              <div key={idx} className={`w-6 h-6 sm:w-8 sm:h-8 rounded text-xs flex items-center justify-center font-medium ${
-                                day.isFuture ? 'bg-gray-200 text-gray-400' : day.hasTraining ? 'bg-blue-500 text-white' : 'bg-red-500 text-white'
-                              }`}>
-                                {['M', 'Þ', 'M', 'F', 'F', 'L', 'S'][idx]}
-                              </div>
-                            ))}
+              <div className="space-y-6">
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="flex-shrink-0">
+                      {horse.image ? (
+                        <img src={horse.image} alt={horse.name} className="w-32 h-32 object-cover rounded-lg" />
+                      ) : (
+                        <div className="w-32 h-32 bg-gray-200 rounded-lg" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h2 className="text-3xl font-bold">{horse.name}</h2>
+                          <p className="text-gray-600">{t.isNumber}: {horse.isNumber}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => setEditingHorseId(horse.id)}
+                            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                          >
+                            <Edit2 size={20} />
+                          </button>
+                          <button
+                            onClick={() => requestDeleteHorse(horse.id)}
+                            className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+                          >
+                            <Trash2 size={20} />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div className="bg-blue-50 p-3 rounded">
+                          <div className="text-sm text-gray-600">{language === 'IS' ? 'Þessi vika' : language === 'EN' ? 'This week' : 'Diese Woche'}</div>
+                          <div className="text-2xl font-bold text-blue-600 flex items-center gap-2">
+                            <Clock size={20} /> {thisWeekMinutes}m
                           </div>
-                          <div className="flex gap-2 text-xs sm:text-sm">
-                            <div className="font-medium text-blue-600 flex items-center gap-1">
-                              <Clock size={12} /> {thisWeekMinutes}m
-                            </div>
-                            <div className="font-medium text-green-600 flex items-center gap-1">
-                              <Clock size={12} /> {totalMinutes}m
-                            </div>
+                        </div>
+                        <div className="bg-green-50 p-3 rounded">
+                          <div className="text-sm text-gray-600">{language === 'IS' ? 'Alls' : language === 'EN' ? 'Total' : 'Gesamt'}</div>
+                          <div className="text-2xl font-bold text-green-600 flex items-center gap-2">
+                            <Clock size={20} /> {totalMinutes}m
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <button onClick={() => setEditingHorseId(horse.id)} className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        <Edit2 size={18} />
-                      </button>
-                      <button onClick={() => requestDeleteHorse(horse.id)} className="p-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
                   </div>
 
-                  <div className="mb-6">
+                  <div className="border-t pt-4">
                     <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
+                      <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>⊃</span>
                       {t.shoeing}
                       {shoingStatus && (
-                        <span className={`text-sm px-3 py-1 rounded ${shoingStatus === 'red' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
-                          {shoingStatus === 'red' ? t.needsShoeing : 'OK'}
+                        <span className={`ml-2 px-2 py-1 rounded text-sm ${
+                          shoingStatus === 'red' ? 'bg-red-100 text-red-600' :
+                          shoingStatus === 'yellow' ? 'bg-yellow-100 text-yellow-600' :
+                          'bg-green-100 text-green-600'
+                        }`}>
+                          {getWeeksSinceShoeing(horse.shoeings)} {getWeeksSinceShoeing(horse.shoeings) === 1 ? t.week : t.weeks}
                         </span>
                       )}
                     </h3>
+                    
                     <div className="flex gap-2 mb-4">
-                      <input type="date" value={newShoeing} onChange={(e) => setNewShoeing(e.target.value)} className="p-2 border rounded" />
-                      <button onClick={() => {
-                        if (newShoeing) { addShoeing(horse.id, newShoeing); setNewShoeing(''); }
-                      }} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">{t.recordShoeing}</button>
+                      <input
+                        type="date"
+                        value={newShoeing}
+                        onChange={(e) => setNewShoeing(e.target.value)}
+                        className="flex-1 p-2 border rounded"
+                      />
+                      <button
+                        onClick={handleAddShoeing}
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                      >
+                        {t.recordShoeing}
+                      </button>
                     </div>
-                    <div className="space-y-2">
-                      {horse.shoeings && horse.shoeings.map(s => (
-                        <div key={s.id} className="bg-gray-50 p-3 rounded flex justify-between items-center">
-                          <span>{new Date(s.date).toLocaleDateString(language === 'IS' ? 'is-IS' : language === 'EN' ? 'en-US' : 'de-DE')}</span>
-                          <button onClick={() => requestDeleteShoeing(horse.id, s.id)} 
-                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">{t.delete}</button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  <div>
-                    <h3 className="text-xl font-bold mb-3">{t.newTraining}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                      <input type="date" value={newTraining.date} onChange={(e) => setNewTraining({ ...newTraining, date: e.target.value })}
-                        className="p-2 border rounded" />
-                      <select value={newTraining.type} onChange={(e) => setNewTraining({ ...newTraining, type: e.target.value })}
-                        className="p-2 border rounded">
-                        <option value="">{t.selectType}</option>
-                        {trainingTypes.map(type => <option key={type} value={type}>{type}</option>)}
-                      </select>
-                      <input type="text" value={newTraining.notes} onChange={(e) => setNewTraining({ ...newTraining, notes: e.target.value })}
-                        placeholder={t.notes} className="p-2 border rounded" />
-                    </div>
-                    
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium mb-2">{t.time}</label>
-                      <div className="flex gap-2 flex-wrap">
-                        {['15', '20', '30', '45'].map(min => (
-                          <button key={min} onClick={() => { setNewTraining({ ...newTraining, duration: min }); setShowCustomDuration(false); }}
-                            className={`px-4 py-2 rounded ${newTraining.duration === min ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}>
-                            {min} {language === 'IS' ? 'mín' : language === 'EN' ? 'min' : 'Min'}
-                          </button>
-                        ))}
-                        <button onClick={() => setShowCustomDuration(!showCustomDuration)}
-                          className={`px-4 py-2 rounded ${showCustomDuration ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}>
-                          {t.otherTime}
-                        </button>
-                      </div>
-                      {showCustomDuration && (
-                        <input type="number" value={customDuration} onChange={(e) => {
-                          setCustomDuration(e.target.value);
-                          setNewTraining({ ...newTraining, duration: e.target.value });
-                        }} placeholder={t.enterMinutes} className="p-2 border rounded w-48 mt-2" min="1" />
-                      )}
-                    </div>
-                    
-                    <button onClick={() => {
-                      if (newTraining.date && newTraining.type) {
-                        addTraining(horse.id, newTraining);
-                        setNewTraining({ date: '', type: '', notes: '', duration: '' });setCustomDuration('');
-                    setShowCustomDuration(false);
-                  } else alert(t.fillDateType);
-                }} className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">{t.recordTraining}</button>
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-bold mb-4">{t.trainings}</h3>
-              <div className="space-y-3">
-                {horse.trainings && horse.trainings.sort((a, b) => new Date(b.date) - new Date(a.date)).map(tr => (
-                  <div key={tr.id} className="bg-gray-50 p-4 rounded flex justify-between items-start">
-                    {editingTrainingId === tr.id ? (
-                      <div className="flex-1 grid grid-cols-4 gap-2">
-                        <input type="date" value={tr.date} onChange={(e) => updateTraining(horse.id, tr.id, { date: e.target.value })}
-                          className="p-2 border rounded" />
-                        <select value={tr.type} onChange={(e) => updateTraining(horse.id, tr.id, { type: e.target.value })}
-                          className="p-2 border rounded">
-                          {trainingTypes.map(type => <option key={type} value={type}>{type}</option>)}
-                        </select>
-                        <input type="text" value={tr.notes || ''} onChange={(e) => updateTraining(horse.id, tr.id, { notes: e.target.value })}
-                          placeholder={t.notes} className="p-2 border rounded" />
-                        <input type="number" value={tr.duration || ''} onChange={(e) => updateTraining(horse.id, tr.id, { duration: e.target.value })}
-                          className="p-2 border rounded" min="1" />
-                      </div>
-                    ) : (
-                      <div>
-                        <div className="font-medium">
-                          {new Date(tr.date).toLocaleDateString(language === 'IS' ? 'is-IS' : language === 'EN' ? 'en-US' : 'de-DE')} - {tr.type}
-                          {tr.duration && <span className="ml-2 text-blue-600">({tr.duration} {language === 'IS' ? 'mín' : language === 'EN' ? 'min' : 'Min'})</span>}
-                        </div>
-                        {tr.notes && <div className="text-gray-600 text-sm">{tr.notes}</div>}
+                    {horse.shoeings && horse.shoeings.length > 0 && (
+                      <div className="space-y-2">
+                        {horse.shoeings
+                          .sort((a, b) => new Date(b.date) - new Date(a.date))
+                          .map(shoeing => (
+                            <div key={shoeing.id} className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                              <span>{new Date(shoeing.date).toLocaleDateString('is-IS')}</span>
+                              <button
+                                onClick={() => requestDeleteShoeing(horse.id, shoeing.id)}
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          ))}
                       </div>
                     )}
-                    <div className="flex gap-2">
-                      <button onClick={() => setEditingTrainingId(editingTrainingId === tr.id ? null : tr.id)}
-                        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        {editingTrainingId === tr.id ? <Check size={16} /> : <Edit2 size={16} />}
+                  </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-bold mb-4">{t.newTraining}</h3>
+                  
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">{t.date}</label>
+                        <input
+                          type="date"
+                          value={newTraining.date}
+                          onChange={(e) => setNewTraining({ ...newTraining, date: e.target.value })}
+                          className="w-full p-2 border rounded"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">{t.type}</label>
+                        <select
+                          value={newTraining.type}
+                          onChange={(e) => setNewTraining({ ...newTraining, type: e.target.value })}
+                          className="w-full p-2 border rounded"
+                        >
+                          <option value="">{t.selectType}</option>
+                          {trainingTypes.map(type => (
+                            <option key={type} value={type}>{type}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">{t.time}</label>
+                      {!showCustomDuration ? (
+                        <div className="grid grid-cols-4 gap-2">
+                          {[15, 30, 45, 60].map(mins => (
+                            <button
+                              key={mins}
+                              onClick={() => setNewTraining({ ...newTraining, duration: mins.toString() })}
+                              className={`p-2 rounded border ${
+                                newTraining.duration === mins.toString()
+                                  ? 'bg-blue-500 text-white border-blue-500'
+                                  : 'bg-white hover:bg-gray-50 border-gray-300'
+                              }`}
+                            >
+                              {mins}m
+                            </button>
+                          ))}
+                        </div>
+                      ) : (
+                        <input
+                          type="number"
+                          value={customDuration}
+                          onChange={(e) => setCustomDuration(e.target.value)}
+                          placeholder={t.enterMinutes}
+                          className="w-full p-2 border rounded"
+                        />
+                      )}
+                      <button
+                        onClick={() => {
+                          setShowCustomDuration(!showCustomDuration);
+                          setNewTraining({ ...newTraining, duration: '' });
+                          setCustomDuration('');
+                        }}
+                        className="text-sm text-blue-500 hover:text-blue-700 mt-2"
+                      >
+                        {showCustomDuration ? t.time : t.otherTime}
                       </button>
-                      <button onClick={() => requestDeleteTraining(horse.id, tr.id)}
-                        className="p-2 bg-red-500 text-white rounded hover:bg-red-600">
-                        <Trash2 size={16} />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1">{t.notes}</label>
+                      <textarea
+                        value={newTraining.notes}
+                        onChange={(e) => setNewTraining({ ...newTraining, notes: e.target.value })}
+                        className="w-full p-2 border rounded"
+                        rows="3"
+                        placeholder={t.notes}
+                      />
+                    </div>
+
+                    <button
+                      onClick={handleAddTraining}
+                      className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    >
+                      {t.recordTraining}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-bold mb-4">{t.trainings}</h3>
+                  
+                  {horse.trainings && horse.trainings.length > 0 ? (
+                    <div className="space-y-3">
+                      {horse.trainings
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .map(tr => (
+                          <div key={tr.id} className="bg-gray-50 p-4 rounded">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                {editingTrainingId === tr.id ? (
+                                  <div className="space-y-2">
+                                    <input
+                                      type="date"
+                                      value={tr.date}
+                                      onChange={(e) => handleUpdateTraining(tr.id, 'date', e.target.value)}
+                                      className="w-full p-1 border rounded text-sm"
+                                    />
+                                    <select
+                                      value={tr.type}
+                                      onChange={(e) => handleUpdateTraining(tr.id, 'type', e.target.value)}
+                                      className="w-full p-1 border rounded text-sm"
+                                    >
+                                      {trainingTypes.map(type => (
+                                        <option key={type} value={type}>{type}</option>
+                                      ))}
+                                    </select>
+                                    <input
+                                      type="number"
+                                      value={tr.duration}
+                                      onChange={(e) => handleUpdateTraining(tr.id, 'duration', e.target.value)}
+                                      className="w-full p-1 border rounded text-sm"
+                                      placeholder={t.time}
+                                    />
+                                    <textarea
+                                      value={tr.notes}
+                                      onChange={(e) => handleUpdateTraining(tr.id, 'notes', e.target.value)}
+                                      className="w-full p-1 border rounded text-sm"
+                                      rows="2"
+                                      placeholder={t.notes}
+                                    />
+                                  </div>
+                                ) : (
+                                  <>
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <span className="font-bold">{new Date(tr.date).toLocaleDateString('is-IS')}</span>
+                                      <span className="text-gray-600">•</span>
+                                      <span className="text-blue-600 font-medium">{tr.type}</span>
+                                      {tr.duration && (
+                                        <>
+                                          <span className="text-gray-600">•</span>
+                                          <span className="text-green-600 font-medium flex items-center gap-1">
+                                            <Clock size={14} /> {tr.duration}m
+                                          </span>
+                                        </>
+                                      )}
+                                    </div>
+                                    {tr.notes && (
+                                      <p className="text-gray-600 text-sm mt-1">{tr.notes}</p>
+                                    )}
+                                  </>
+                                )}
+                              </div>
+                              <div className="flex gap-2 ml-4">
+                                <button
+                                  onClick={() => handleEditTraining(tr)}
+                                  className={`p-2 rounded ${
+                                    editingTrainingId === tr.id
+                                      ? 'bg-green-500 text-white hover:bg-green-600'
+                                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                                  }`}
+                                >
+                                  {editingTrainingId === tr.id ? <Check size={16} /> : <Edit2 size={16} />}
+                                </button>
+                                <button
+                                  onClick={() => requestDeleteTraining(horse.id, tr.id)}
+                                  className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">{language === 'IS' ? 'Engar þjálfunarskráningar enn' : language === 'EN' ? 'No training records yet' : 'Noch keine Trainingsaufzeichnungen'}</p>
+                  )}
+                </div>
+              </div>
+            );
+          };
+
+          return (
+            <div className="min-h-screen bg-gray-100 p-2 sm:p-4 md:p-6">
+              {confirmDelete && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-md w-full">
+                    <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">{t.confirmDelete}</h3>
+                    <p className="mb-4 sm:mb-6 text-sm sm:text-base">
+                      {confirmDelete.type === 'horse' && t.confirmDeleteHorse}
+                      {confirmDelete.type === 'shoeing' && t.confirmDeleteShoeing}
+                      {confirmDelete.type === 'training' && t.confirmDeleteTraining}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                      <button
+                        onClick={() => {
+                          if (confirmDelete.type === 'horse') {
+                            deleteHorse(confirmDelete.horseId);
+                          } else if (confirmDelete.type === 'shoeing') {
+                            deleteShoeing(confirmDelete.horseId, confirmDelete.itemId);
+                          } else if (confirmDelete.type === 'training') {
+                            deleteTraining(confirmDelete.horseId, confirmDelete.itemId);
+                          }
+                        }}
+                        className="bg-red-500 text-white px-4 sm:px-6 py-2 rounded hover:bg-red-600 font-bold text-sm sm:text-base"
+                      >
+                        {t.yesDelete}
+                      </button>
+                      <button
+                        onClick={() => setConfirmDelete(null)}
+                        className="bg-gray-300 px-4 sm:px-6 py-2 rounded hover:bg-gray-400 text-sm sm:text-base"
+                      >
+                        {t.cancel}
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        );
-      };
-
-      return (
-        <div className="min-h-screen bg-gray-100 p-2 sm:p-4 md:p-6">
-          {confirmDelete && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl max-w-md w-full">
-                <h3 className="text-lg sm:text-xl font-bold mb-3">{t.confirmDelete}</h3>
-                <p className="mb-4 text-sm sm:text-base">
-                  {confirmDelete.type === 'horse' && t.confirmDeleteHorse}
-                  {confirmDelete.type === 'shoeing' && t.confirmDeleteShoeing}
-                  {confirmDelete.type === 'training' && t.confirmDeleteTraining}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                  <button onClick={() => {
-                    if (confirmDelete.type === 'horse') deleteHorse(confirmDelete.horseId);
-                    else if (confirmDelete.type === 'shoeing') deleteShoeing(confirmDelete.horseId, confirmDelete.itemId);
-                    else deleteTraining(confirmDelete.horseId, confirmDelete.itemId);
-                  }} className="flex-1 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 font-bold">{t.yesDelete}</button>
-                  <button onClick={() => setConfirmDelete(null)}
-                    className="flex-1 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 font-bold">{t.cancel}</button>
                 </div>
-              </div>
-            </div>
-          )}
+              )}
 
-          <div className="w-full mx-auto">
-            <div className="text-center mb-6">
-              <div className="flex justify-between items-center mb-4 gap-2">
-                <div className="flex-1"></div>
-                <h1 className="text-2xl md:text-4xl font-bold text-gray-800 flex-1">{t.title}</h1>
-                <div className="flex-1 flex justify-end gap-1">
-                  {['IS', 'EN', 'DE'].map(lang => (
-                    <button key={lang} onClick={() => setLanguage(lang)}
-                      className={`px-2 py-1 rounded text-xs ${language === lang ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}>
-                      {lang}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mb-4">
-                <div className="relative">
-                  <button onClick={() => setShowExportMenu(!showExportMenu)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 text-sm w-full sm:w-auto justify-center">
-                    <Download size={18} /> {t.export}
-                  </button>
-                  {showExportMenu && (
-                    <div className="absolute top-full mt-2 bg-white shadow-lg rounded-lg overflow-hidden z-10 w-full sm:min-w-full left-0">
-                      <button onClick={() => exportData(false)}
-                        className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-sm">{t.exportBasic}</button>
-                      <button onClick={() => exportData(true)}
-                        className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-sm">{t.exportAll}</button>
-                    </div>
-                  )}
-                </div>
-                <label className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-600 cursor-pointer text-sm w-full sm:w-auto justify-center">
-                  <Upload size={18} /> {t.import}
-                  <input type="file" accept=".json" onChange={importData} className="hidden" />
-                </label>
-              </div>
-            </div>
-
-            {editingHorseId ? (
-              <HorseForm horse={horses.find(h => h.id === editingHorseId)} onCancel={() => setEditingHorseId(null)} />
-            ) : currentView === 'add' ? (
-              <HorseForm onCancel={() => setCurrentView('list')} />
-            ) : currentView === 'detail' ? (
-              <div>
-                <button onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }}
-                  className="mb-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400">← {t.back}</button>
-                <HorseDetail />
-              </div>
-            ) : (
-              <div>
+              <div className="w-full mx-auto">
                 <div className="text-center mb-6">
-                  <button onClick={() => setCurrentView('add')}
-                    className="bg-green-500 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-green-600 mx-auto">
-                    <Plus size={24} /> {t.addHorse}
-                  </button>
+                  <div className="flex justify-between items-center mb-4 gap-2">
+                    <div className="flex-1"></div>
+                    <h1 className="text-2xl md:text-4xl font-bold text-gray-800 flex-1">{t.title}</h1>
+                    <div className="flex-1 flex justify-end gap-1">
+                      <button
+                        onClick={() => setLanguage('IS')}
+                        className={`px-2 py-1 rounded text-xs ${language === 'IS' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                      >
+                        IS
+                      </button>
+                      <button
+                        onClick={() => setLanguage('EN')}
+                        className={`px-2 py-1 rounded text-xs ${language === 'EN' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                      >
+                        EN
+                      </button>
+                      <button
+                        onClick={() => setLanguage('DE')}
+                        className={`px-2 py-1 rounded text-xs ${language === 'DE' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                      >
+                        DE
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mb-4">
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowExportMenu(!showExportMenu)}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-600 text-sm w-full sm:w-auto justify-center"
+                      >
+                        <Download size={18} />
+                        {t.export}
+                      </button>
+                      {showExportMenu && (
+                        <div className="absolute top-full mt-2 bg-white shadow-lg rounded-lg overflow-hidden z-10 w-full sm:min-w-full left-0">
+                          <button
+                            onClick={() => exportData(false)}
+                            className="block w-full text-left px-3 py-2 hover:bg-gray-100 whitespace-nowrap text-sm"
+                          >
+                            {t.exportBasic}
+                          </button>
+                          <button
+                            onClick={() => exportData(true)}
+                            className="block w-full text-left px-3 py-2 hover:bg-gray-100 whitespace-nowrap text-sm"
+                          >
+                            {t.exportAll}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <label className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-600 cursor-pointer text-sm w-full sm:w-auto justify-center">
+                      <Upload size={18} />
+                      {t.import}
+                      <input type="file" accept=".json" onChange={importData} className="hidden" />
+                    </label>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-2 sm:px-4">
-                  {horses.map(horse => {
-                    const shoingStatus = getShoingStatus(horse.shoeings);
-                    const weeksSinceShoeing = getWeeksSinceShoeing(horse.shoeings);
-                    const thisWeekMinutes = getThisWeekTrainingMinutes(horse.trainings);
-                    const totalMinutes = getTotalTrainingMinutes(horse.trainings);
-                    const dateRange = getTrainingDateRange(horse.trainings);
-                    const weekDays = getWeekDaysStatus(horse.trainings);
-                    
-                    return (
-                      <div key={horse.id} onClick={() => { setSelectedHorseId(horse.id); setCurrentView('detail'); }}
-                        className="bg-white p-3 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow">
-                        <div className="flex gap-2 mb-2">
-                          <div className="flex-shrink-0">
-                            {horse.image ? (
-                              <img src={horse.image} alt={horse.name} className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full" />
-                            ) : (
-                              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 rounded-full" />
-                            )}
-                          </div>
-                          
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-base sm:text-lg font-bold truncate">{horse.name}</h3>
-                            <p className="text-gray-600 text-xs mb-1">{t.isNumber}: {horse.isNumber}</p>
-                            <div className="text-xs text-gray-500">
-                              {horse.trainings?.length === 1 ? `1 ${t.recording}` : `${horse.trainings?.length || 0} ${t.recordings}`}
-                            </div>
-                          </div>
-                          
-                          <div className="flex flex-col items-end justify-center text-xs">
-                            {weeksSinceShoeing !== null ? (
-                              <div className={`font-medium flex items-center gap-1 ${shoingStatus === 'red' ? 'text-red-600' : shoingStatus === 'green' ? 'text-green-600' : 'text-gray-700'}`}>
-                                <span>⊃</span> 
-                                <span className="hidden sm:inline">{weeksSinceShoeing >= 8 ? t.needsShoeing : `${weeksSinceShoeing}${language === 'IS' ? 'v' : 'w'}`}</span>
-                                <span className="sm:hidden">{weeksSinceShoeing >= 8 ? '!' : `${weeksSinceShoeing}${language === 'IS' ? 'v' : 'w'}`}</span>
-                              </div>
-                            ) : (
-                              <div className="text-gray-400 flex items-center gap-1"><span>⊃</span> -</div>
-                            )}
-                          </div>
-                        </div>
+                {editingHorseId ? (
+                  <HorseForm
+                    horse={horses.find(h => h.id === editingHorseId)}
+                    onCancel={() => setEditingHorseId(null)}
+                  />
+                ) : currentView === 'add' ? (
+                  <HorseForm onCancel={() => setCurrentView('list')} />
+                ) : currentView === 'detail' ? (
+                  <div>
+                    <button
+                      onClick={() => {
+                        setCurrentView('list');
+                        setSelectedHorseId(null);
+                      }}
+                      className="mb-4 bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+                    >
+                      ← {t.back}
+                    </button>
+                    <HorseDetail />
+                  </div>
+                ) : (
+                  <div>
+                    <div className="text-center mb-6">
+                      <button
+                        onClick={() => setCurrentView('add')}
+                        className="bg-green-500 text-white px-6 py-3 rounded-lg flex items-center gap-2 hover:bg-green-600 mx-auto text-base sm:text-lg"
+                      >
+                        <Plus size={24} />
+                        {t.addHorse}
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-2 sm:px-4">
+                      {horses.map(horse => {
+                        const shoingStatus = getShoingStatus(horse.shoeings);
+                        const weeksSinceShoeing = getWeeksSinceShoeing(horse.shoeings);
+                        const thisWeekMinutes = getThisWeekTrainingMinutes(horse.trainings);
+                        const totalMinutes = getTotalTrainingMinutes(horse.trainings);
+                        const dateRange = getTrainingDateRange(horse.trainings);
+                        const weekDays = getWeekDaysStatus(horse.trainings);
                         
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1">
-                            <div className="flex gap-0.5 sm:gap-1 mb-1 sm:mb-2">
-                              {weekDays.map((day, idx) => (
-                                <div key={idx} className={`w-5 h-5 sm:w-6 sm:h-6 rounded text-xs flex items-center justify-center font-medium ${
-                                  day.isFuture ? 'bg-gray-200 text-gray-400' : day.hasTraining ? 'bg-blue-500 text-white' : 'bg-red-500 text-white'
-                                }`}>
-                                  {['M', 'Þ', 'M', 'F', 'F', 'L', 'S'][idx]}
-                                </div>
-                              ))}
-                            </div>
-                            {dateRange && (
-                              <div className="text-xs text-gray-500 hidden sm:block">
-                                {dateRange.firstDate.toLocaleDateString(language === 'IS' ? 'is-IS' : language === 'EN' ? 'en-US' : 'de-DE', { day: 'numeric', month: 'short' })} - {dateRange.lastDate.toLocaleDateString(language === 'IS' ? 'is-IS' : language === 'EN' ? 'en-US' : 'de-DE', { day: 'numeric', month: 'short', year: 'numeric' })}
+                        return (
+                          <div
+                            key={horse.id}
+                            onClick={() => {
+                              setSelectedHorseId(horse.id);
+                              setCurrentView('detail');
+                            }}
+                            className="bg-white p-4 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+                          >
+                            <div className="flex gap-3 mb-3">
+                              <div className="flex-shrink-0">
+                                {horse.image ? (
+                                  <img src={horse.image} alt={horse.name} className="w-16 h-16 object-cover rounded-full" />
+                                ) : (
+                                  <div className="w-16 h-16 bg-gray-200 rounded-full" />
+                                )}
                               </div>
-                            )}
-                          </div>
-                          
-                          <div className="flex flex-col items-end text-xs space-y-1">
-                            <div className="font-medium text-blue-600 flex items-center gap-1">
-                              <Clock size={11} /> {thisWeekMinutes}m
+                              
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-lg font-bold truncate">{horse.name}</h3>
+                                <p className="text-gray-600 text-xs mb-1">{t.isNumber}: {horse.isNumber}</p>
+                                <div className="text-xs text-gray-500">
+                                  {horse.trainings?.length === 1 ? `1 ${t.recording}` : `${horse.trainings?.length || 0} ${t.recordings}`}
+                                </div>
+                              </div>
+                              
+                              <div className="flex flex-col items-end justify-center text-xs space-y-1 flex-shrink-0">
+                                {weeksSinceShoeing !== null ? (
+                                  <div className={`font-medium flex items-center gap-1 ${shoingStatus === 'red' ? 'text-red-600' : shoingStatus === 'green' ? 'text-green-600' : 'text-gray-700'}`}>
+                                    <span style={{ fontWeight: 'bold' }}>⊃</span> 
+                                    {weeksSinceShoeing >= 8 ? t.needsShoeing : `${weeksSinceShoeing}${language === 'IS' ? 'v' : 'w'}`}
+                                  </div>
+                                ) : (
+                                  <div className="text-gray-400 flex items-center gap-1">
+                                    <span style={{ fontWeight: 'bold' }}>⊃</span> -
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                            <div className="font-medium text-green-600 flex items-center gap-1">
-                              <Clock size={11} /> {totalMinutes}m
+                            
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex-1">
+                                <div className="flex gap-1 mb-2">
+                                  {weekDays.map((day, idx) => (
+                                    <div
+                                      key={idx}
+                                      className={`w-6 h-6 rounded text-xs flex items-center justify-center font-medium ${
+                                        day.isFuture 
+                                          ? 'bg-gray-200 text-gray-400' 
+                                          : day.hasTraining 
+                                            ? 'bg-blue-500 text-white' 
+                                            : 'bg-red-500 text-white'
+                                      }`}
+                                      title={day.date.toLocaleDateString('is-IS')}
+                                    >
+                                      {['M', 'Þ', 'M', 'F', 'F', 'L', 'S'][idx]}
+                                    </div>
+                                  ))}
+                                </div>
+                                
+                                {dateRange && (
+                                  <div className="text-xs text-gray-500">
+                                    {dateRange.firstDate.toLocaleDateString('is-IS', { day: 'numeric', month: 'short' })} - {dateRange.lastDate.toLocaleDateString('is-IS', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                  </div>
+                                )}
+                              </div>
+                              
+                              <div className="flex flex-col items-end text-xs space-y-1">
+                                <div className="font-medium text-blue-600 flex items-center gap-1">
+                                  <Clock size={12} /> {thisWeekMinutes}m
+                                </div>
+                                <div className="font-medium text-green-600 flex items-center gap-1">
+                                  <Clock size={12} /> {totalMinutes}m
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-      );
-    };
+            </div>
+          );
+        };
 
-    ReactDOM.render(<HorseTrainingApp />, document.getElementById('root'));
-</script>
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<HorseTrainingApp />);
+    </script>
+</body>
+</html>
