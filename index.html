@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hrossaþjálfun - með Tölfræði & Mobile UX</title>
+    <title>Hrossaþjálfun v3.0</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Prevent overscroll bounce on iOS */
         body {
             overscroll-behavior-y: contain;
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
@@ -21,24 +22,27 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
         
-        // Lucide icons
+        // Lucide Icons
         const Camera = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                 <circle cx="12" cy="13" r="4"></circle>
             </svg>
         );
+
         const Plus = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
         );
+
         const Edit2 = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
             </svg>
         );
+
         const Trash2 = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -47,6 +51,7 @@
                 <line x1="14" y1="11" x2="14" y2="17"></line>
             </svg>
         );
+
         const Download = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -54,6 +59,7 @@
                 <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
         );
+
         const Upload = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -61,18 +67,19 @@
                 <line x1="12" y1="3" x2="12" y2="15"></line>
             </svg>
         );
+
         const Check = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         );
+
         const Clock = ({ size = 24 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
         );
-
 
 
 const HorseTrainingApp = () => {
@@ -88,6 +95,8 @@ const HorseTrainingApp = () => {
   const [pullDistance, setPullDistance] = useState(0);
   const [swipingItem, setSwipingItem] = useState(null);
   const [swipeDistance, setSwipeDistance] = useState(0);
+
+  const APP_VERSION = 'v3.0.0';
 
   const trainingTypes = [
     'Tölt', 'Brokk', 'Fet', 'Stökk', 'Skeið',
@@ -140,16 +149,6 @@ const HorseTrainingApp = () => {
       enterMinutes: 'Sláðu inn mínútur',
       deleteImage: 'Eyða mynd',
       confirmDeleteImage: 'Ertu viss um að þú viljir eyða þessari mynd?',
-      statistics: 'Tölfræði',
-      last4Weeks: 'Síðustu 4 vikur',
-      trainingTypes: 'Þjálfunartegundir',
-      weekStats: 'Vikutölfræði',
-      mostActiveDay: 'Virkasti dagurinn',
-      leastActiveDay: 'Minnsti dagurinn',
-      minutes: 'mínútur',
-      noDataYet: 'Engin gögn enn',
-      week: 'Vika',
-      total: 'Alls',
       swipeToDelete: 'Strýktu til að eyða',
       pullToRefresh: 'Dragðu niður til að uppfæra',
       home: 'Heim',
@@ -199,16 +198,6 @@ const HorseTrainingApp = () => {
       enterMinutes: 'Enter minutes',
       deleteImage: 'Delete image',
       confirmDeleteImage: 'Are you sure you want to delete this image?',
-      statistics: 'Statistics',
-      last4Weeks: 'Last 4 Weeks',
-      trainingTypes: 'Training Types',
-      weekStats: 'Week Statistics',
-      mostActiveDay: 'Most Active Day',
-      leastActiveDay: 'Least Active Day',
-      minutes: 'minutes',
-      noDataYet: 'No data yet',
-      week: 'Week',
-      total: 'Total',
       swipeToDelete: 'Swipe to delete',
       pullToRefresh: 'Pull to refresh',
       home: 'Home',
@@ -258,16 +247,6 @@ const HorseTrainingApp = () => {
       enterMinutes: 'Minuten eingeben',
       deleteImage: 'Bild löschen',
       confirmDeleteImage: 'Möchten Sie dieses Bild wirklich löschen?',
-      statistics: 'Statistiken',
-      last4Weeks: 'Letzte 4 Wochen',
-      trainingTypes: 'Trainingstypen',
-      weekStats: 'Wochenstatistik',
-      mostActiveDay: 'Aktivster Tag',
-      leastActiveDay: 'Wenigster Tag',
-      minutes: 'Minuten',
-      noDataYet: 'Noch keine Daten',
-      week: 'Woche',
-      total: 'Gesamt',
       swipeToDelete: 'Wischen zum Löschen',
       pullToRefresh: 'Ziehen zum Aktualisieren',
       home: 'Startseite',
@@ -533,87 +512,6 @@ const HorseTrainingApp = () => {
     }
   };
 
-  // Statistics functions
-  const getLast4WeeksData = (trainings) => {
-    if (!trainings || trainings.length === 0) return [];
-    
-    const today = new Date();
-    const weeks = [];
-    
-    for (let i = 3; i >= 0; i--) {
-      const weekEnd = new Date(today);
-      weekEnd.setDate(today.getDate() - (i * 7));
-      weekEnd.setHours(23, 59, 59, 999);
-      
-      const weekStart = new Date(weekEnd);
-      weekStart.setDate(weekEnd.getDate() - 6);
-      weekStart.setHours(0, 0, 0, 0);
-      
-      const weekTrainings = trainings.filter(t => {
-        const trainingDate = new Date(t.date);
-        return trainingDate >= weekStart && trainingDate <= weekEnd;
-      });
-      
-      const totalMinutes = weekTrainings.reduce((sum, t) => sum + (parseInt(t.duration) || 0), 0);
-      
-      weeks.push({
-        weekStart,
-        weekEnd,
-        totalMinutes,
-        label: i === 0 ? (language === 'IS' ? 'Þessi vika' : language === 'EN' ? 'This week' : 'Diese Woche') : `${language === 'IS' ? 'Vika' : language === 'EN' ? 'Week' : 'Woche'} ${i === 1 ? -1 : i === 2 ? -2 : -3}`
-      });
-    }
-    
-    return weeks;
-  };
-
-  const getTrainingTypeStats = (trainings) => {
-    if (!trainings || trainings.length === 0) return [];
-    
-    const typeCounts = {};
-    trainings.forEach(t => {
-      if (t.type) {
-        typeCounts[t.type] = (typeCounts[t.type] || 0) + (parseInt(t.duration) || 0);
-      }
-    });
-    
-    const total = Object.values(typeCounts).reduce((sum, val) => sum + val, 0);
-    
-    return Object.entries(typeCounts).map(([type, minutes]) => ({
-      type,
-      minutes,
-      percentage: total > 0 ? ((minutes / total) * 100).toFixed(1) : 0
-    })).sort((a, b) => b.minutes - a.minutes);
-  };
-
-  const getWeekDayStats = (trainings) => {
-    if (!trainings || trainings.length === 0) return { mostActive: null, leastActive: null };
-    
-    const dayNames = language === 'IS' 
-      ? ['Sunnudagur', 'Mánudagur', 'Þriðjudagur', 'Miðvikudagur', 'Fimmtudagur', 'Föstudagur', 'Laugardagur']
-      : language === 'EN'
-      ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      : ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-    
-    const dayCounts = [0, 0, 0, 0, 0, 0, 0];
-    
-    trainings.forEach(t => {
-      const dayIndex = new Date(t.date).getDay();
-      dayCounts[dayIndex] += parseInt(t.duration) || 0;
-    });
-    
-    const maxMinutes = Math.max(...dayCounts);
-    const minMinutes = Math.min(...dayCounts.filter(m => m > 0));
-    
-    const mostActiveIndex = dayCounts.indexOf(maxMinutes);
-    const leastActiveIndex = dayCounts.indexOf(minMinutes);
-    
-    return {
-      mostActive: maxMinutes > 0 ? { day: dayNames[mostActiveIndex], minutes: maxMinutes } : null,
-      leastActive: minMinutes > 0 && minMinutes < maxMinutes ? { day: dayNames[leastActiveIndex], minutes: minMinutes } : null
-    };
-  };
-
   // Mobile UX functions
   const handlePullStart = (e) => {
     if (window.scrollY === 0) {
@@ -824,7 +722,6 @@ const HorseTrainingApp = () => {
     const [editingTrainingId, setEditingTrainingId] = useState(null);
     const [customDuration, setCustomDuration] = useState('');
     const [showCustomDuration, setShowCustomDuration] = useState(false);
-    const [activeTab, setActiveTab] = useState('training'); // 'training' or 'statistics'
     
     if (!horse) return null;
     
@@ -889,32 +786,6 @@ const HorseTrainingApp = () => {
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-2 mb-6 border-b">
-            <button
-              onClick={() => setActiveTab('training')}
-              className={`px-4 py-2 font-medium transition-colors ${
-                activeTab === 'training'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              {t.trainings}
-            </button>
-            <button
-              onClick={() => setActiveTab('statistics')}
-              className={`px-4 py-2 font-medium transition-colors ${
-                activeTab === 'statistics'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              {t.statistics}
-            </button>
-          </div>
-
-          {activeTab === 'training' ? (
-            <>
           {/* Járning */}
           <div className="mb-6">
             <h3 className="text-xl font-bold mb-3 flex items-center gap-2">
@@ -1156,137 +1027,6 @@ const HorseTrainingApp = () => {
             ))}
           </div>
         </div>
-            </>
-          ) : (
-            /* Statistics Tab */
-            <div className="space-y-6">
-              {/* Síðustu 4 vikur - Súlurit */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-bold mb-4">{t.last4Weeks}</h3>
-                {(() => {
-                  const weeksData = getLast4WeeksData(horse.trainings);
-                  const maxMinutes = Math.max(...weeksData.map(w => w.totalMinutes), 1);
-                  
-                  return weeksData.length > 0 ? (
-                    <div className="space-y-3">
-                      {weeksData.map((week, idx) => (
-                        <div key={idx} className="flex items-center gap-3">
-                          <div className="w-24 text-sm text-gray-600">{week.label}</div>
-                          <div className="flex-1 bg-gray-200 rounded-full h-8 overflow-hidden">
-                            <div 
-                              className="bg-blue-500 h-full flex items-center justify-end pr-2 text-white text-sm font-medium transition-all duration-500"
-                              style={{ width: `${(week.totalMinutes / maxMinutes) * 100}%` }}
-                            >
-                              {week.totalMinutes > 0 && `${week.totalMinutes}m`}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-8">{t.noDataYet}</p>
-                  );
-                })()}
-              </div>
-
-              {/* Þjálfunartegundir - Paikarit */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-bold mb-4">{t.trainingTypes}</h3>
-                {(() => {
-                  const typeStats = getTrainingTypeStats(horse.trainings);
-                  const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316'];
-                  
-                  return typeStats.length > 0 ? (
-                    <div className="space-y-4">
-                      {/* Pie chart visual */}
-                      <div className="flex justify-center mb-6">
-                        <div className="relative w-48 h-48">
-                          <svg viewBox="0 0 100 100" className="transform -rotate-90">
-                            {(() => {
-                              let currentAngle = 0;
-                              return typeStats.map((stat, idx) => {
-                                const angle = (stat.percentage / 100) * 360;
-                                const largeArc = angle > 180 ? 1 : 0;
-                                const startX = 50 + 40 * Math.cos((currentAngle * Math.PI) / 180);
-                                const startY = 50 + 40 * Math.sin((currentAngle * Math.PI) / 180);
-                                const endX = 50 + 40 * Math.cos(((currentAngle + angle) * Math.PI) / 180);
-                                const endY = 50 + 40 * Math.sin(((currentAngle + angle) * Math.PI) / 180);
-                                
-                                const path = angle === 360 
-                                  ? `M 50,50 L 90,50 A 40,40 0 1,1 89.9,50 Z`
-                                  : `M 50,50 L ${startX},${startY} A 40,40 0 ${largeArc},1 ${endX},${endY} Z`;
-                                
-                                currentAngle += angle;
-                                
-                                return (
-                                  <path
-                                    key={idx}
-                                    d={path}
-                                    fill={colors[idx % colors.length]}
-                                    stroke="white"
-                                    strokeWidth="0.5"
-                                  />
-                                );
-                              });
-                            })()}
-                          </svg>
-                        </div>
-                      </div>
-                      
-                      {/* Legend */}
-                      <div className="grid grid-cols-1 gap-2">
-                        {typeStats.map((stat, idx) => (
-                          <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                            <div className="flex items-center gap-2">
-                              <div 
-                                className="w-4 h-4 rounded"
-                                style={{ backgroundColor: colors[idx % colors.length] }}
-                              />
-                              <span className="font-medium">{stat.type}</span>
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {stat.minutes}m ({stat.percentage}%)
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-8">{t.noDataYet}</p>
-                  );
-                })()}
-              </div>
-
-              {/* Vikudagatölfræði */}
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-bold mb-4">{t.weekStats}</h3>
-                {(() => {
-                  const dayStats = getWeekDayStats(horse.trainings);
-                  
-                  return dayStats.mostActive || dayStats.leastActive ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {dayStats.mostActive && (
-                        <div className="bg-green-50 p-4 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">{t.mostActiveDay}</div>
-                          <div className="text-2xl font-bold text-green-600">{dayStats.mostActive.day}</div>
-                          <div className="text-sm text-gray-600">{dayStats.mostActive.minutes} {t.minutes}</div>
-                        </div>
-                      )}
-                      {dayStats.leastActive && (
-                        <div className="bg-orange-50 p-4 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">{t.leastActiveDay}</div>
-                          <div className="text-2xl font-bold text-orange-600">{dayStats.leastActive.day}</div>
-                          <div className="text-sm text-gray-600">{dayStats.leastActive.minutes} {t.minutes}</div>
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-center py-8">{t.noDataYet}</p>
-                  );
-                })()}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );
@@ -1355,7 +1095,10 @@ const HorseTrainingApp = () => {
         <div className="text-center mb-6">
           <div className="flex justify-between items-center mb-4 gap-2">
             <div className="flex-1"></div>
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-800 flex-1">{t.title}</h1>
+            <div className="flex-1 text-center">
+              <h1 className="text-2xl md:text-4xl font-bold text-gray-800">{t.title}</h1>
+              <p className="text-xs text-gray-400 mt-1">{APP_VERSION}</p>
+            </div>
             <div className="flex-1 flex justify-end gap-1">
               <button
                 onClick={() => setLanguage('IS')}
@@ -1579,12 +1322,16 @@ const HorseTrainingApp = () => {
             <span className="text-xs mt-1">{t.export}</span>
           </button>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 text-center pb-1">
+          <span className="text-xs text-gray-400">{APP_VERSION}</span>
+        </div>
       </div>
     </div>
   );
 };
 
 
+        // Render
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<HorseTrainingApp />);
     </script>
