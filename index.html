@@ -11,7 +11,7 @@
     <style>
         body { 
             background-color: #f8f9fa; 
-            padding-bottom: 80px;
+            padding-bottom: 100px;
         }
         .horse-card {
             cursor: pointer;
@@ -43,7 +43,12 @@
             background: white;
             border-top: 1px solid #dee2e6;
             padding: 12px 0;
-            z-index: 1000;
+            z-index: 1050;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .bottom-nav .col:active {
+            background-color: #f8f9fa;
         }
         
         @media (min-width: 768px) {
@@ -707,17 +712,17 @@
                     <div className="bottom-nav d-md-none">
                         <div className="container">
                             <div className="row text-center">
-                                <div className="col" onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }}>
-                                    <div className="text-primary">🏠</div>
-                                    <small>{t.home}</small>
+                                <div className="col" onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }} style={{cursor: 'pointer', padding: '8px 0'}}>
+                                    <div style={{fontSize: '28px'}}>🏠</div>
+                                    <small style={{fontSize: '11px'}}>{t.home}</small>
                                 </div>
-                                <div className="col" onClick={() => setCurrentView('add')}>
-                                    <div className="text-success"><Plus size={32} /></div>
-                                    <small>{t.add}</small>
+                                <div className="col" onClick={() => setCurrentView('add')} style={{cursor: 'pointer', padding: '8px 0'}}>
+                                    <div className="text-success"><Plus size={36} /></div>
+                                    <small style={{fontSize: '11px'}}>{t.add}</small>
                                 </div>
-                                <div className="col" onClick={() => setShowExportMenu(!showExportMenu)}>
-                                    <Download size={24} />
-                                    <div><small>{t.export}</small></div>
+                                <div className="col" onClick={() => setShowExportMenu(!showExportMenu)} style={{cursor: 'pointer', padding: '8px 0'}}>
+                                    <Download size={28} />
+                                    <div><small style={{fontSize: '11px'}}>{t.export}</small></div>
                                 </div>
                             </div>
                         </div>
