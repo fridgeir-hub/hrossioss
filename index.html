@@ -4,100 +4,724 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hrossaþjálfun v3.0</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
-        .title { text-align: center; font-size: 2rem; font-weight: bold; margin: 1rem 0; }
-        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; font-size: 1rem; }
-        .btn-green { background: #10b981; color: white; }
-        .btn-gray { background: #6b7280; color: white; }
-        .btn-full { width: 100%; }
-        .card { background: white; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem; }
-        .horse-card { background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1rem; cursor: pointer; }
-        .input { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 0.375rem; margin-top: 0.5rem; font-size: 1rem; }
-        .mb-1 { margin-bottom: 1rem; }
-        .gap { display: flex; gap: 0.5rem; }
+        body { 
+            background-color: #f8f9fa; 
+            padding-bottom: 80px;
+        }
+        .horse-card {
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+        }
+        .horse-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .week-day {
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .day-trained { background-color: #0d6efd; color: white; }
+        .day-not-trained { background-color: #dc3545; color: white; }
+        .day-future { background-color: #dee2e6; color: #6c757d; }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #dee2e6;
+            padding: 12px 0;
+            z-index: 1000;
+        }
+        
+        @media (min-width: 768px) {
+            .bottom-nav { display: none; }
+            body { padding-bottom: 20px; }
+        }
+        
+        .image-preview {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .image-delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .image-preview:hover .image-delete-btn {
+            display: block;
+        }
+        
+        .training-item {
+            position: relative;
+            touch-action: pan-y;
+        }
+        
+        .pull-refresh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #0d6efd;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: all 0.3s;
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
+
     <script type="text/babel">
         const { useState, useEffect } = React;
         
+        // Icons as SVG components
+        const Camera = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+        );
+        
+        const Plus = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        );
+        
+        const Edit2 = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+            </svg>
+        );
+        
+        const Trash2 = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+        );
+        
+        const Download = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+            </svg>
+        );
+        
+        const Upload = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+            </svg>
+        );
+        
+        const Clock = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        );
+
         const HorseTrainingApp = () => {
             const [horses, setHorses] = useState([]);
-            const [view, setView] = useState('list');
+            const [currentView, setCurrentView] = useState('list');
+            const [selectedHorseId, setSelectedHorseId] = useState(null);
+            const [editingHorseId, setEditingHorseId] = useState(null);
+            const [showExportMenu, setShowExportMenu] = useState(false);
+            const [confirmDelete, setConfirmDelete] = useState(null);
+            const [language, setLanguage] = useState('IS');
+            
+            const APP_VERSION = 'v3.0.0';
+            
+            const trainingTypes = ['Tölt', 'Brokk', 'Fet', 'Stökk', 'Skeið', 'Vinna í reiðhöll', 'Útreiðar', 'Rekstur', 'Annað'];
+            
+            const translations = {
+                IS: {
+                    title: 'Hrossaþjálfun',
+                    export: 'Export',
+                    import: 'Import',
+                    addHorse: 'Skrá nýtt hross',
+                    recordings: 'skráningar',
+                    recording: 'skráning',
+                    needsShoeing: 'Þarf að járna',
+                    name: 'Nafn',
+                    isNumber: 'IS-númer',
+                    image: 'Mynd',
+                    save: 'Vista',
+                    cancel: 'Hætta við',
+                    edit: 'Breyta',
+                    delete: 'Eyða',
+                    back: 'Til baka',
+                    shoeing: 'Járning',
+                    recordShoeing: 'Skrá járningu',
+                    newTraining: 'Ný þjálfunarskráning',
+                    date: 'Dagsetning',
+                    type: 'Tegund',
+                    selectType: 'Veldu tegund',
+                    notes: 'Athugasemdir',
+                    time: 'Tími (mínútur)',
+                    recordTraining: 'Skrá þjálfun',
+                    trainings: 'Þjálfunarskráningar',
+                    confirmDelete: 'Staðfesta eyðingu',
+                    confirmDeleteHorse: 'Ertu viss um að þú viljir eyða þessu rossi?',
+                    confirmDeleteTraining: 'Ertu viss um að þú viljir eyða þessari þjálfunarskráningu?',
+                    yesDelete: 'JÁ, EYÐA',
+                    chooseImage: 'Velja mynd',
+                    fillRequired: 'Vinsamlegast fylltu út nafn og IS-númer',
+                    editHorse: 'Breyta rossi',
+                    addNewHorse: 'Skrá nýtt hross',
+                    deleteImage: 'Eyða mynd',
+                    confirmDeleteImage: 'Ertu viss um að þú viljir eyða þessari mynd?',
+                    noHorses: 'Engin hross skráð enn',
+                    home: 'Heim',
+                    add: 'Bæta við'
+                },
+                EN: {
+                    title: 'Horse Training',
+                    export: 'Export',
+                    import: 'Import',
+                    addHorse: 'Add New Horse',
+                    recordings: 'recordings',
+                    recording: 'recording',
+                    needsShoeing: 'Needs shoeing',
+                    name: 'Name',
+                    isNumber: 'IS Number',
+                    image: 'Image',
+                    save: 'Save',
+                    cancel: 'Cancel',
+                    edit: 'Edit',
+                    delete: 'Delete',
+                    back: 'Back',
+                    shoeing: 'Shoeing',
+                    recordShoeing: 'Record Shoeing',
+                    newTraining: 'New Training Record',
+                    date: 'Date',
+                    type: 'Type',
+                    selectType: 'Select type',
+                    notes: 'Notes',
+                    time: 'Time (minutes)',
+                    recordTraining: 'Record Training',
+                    trainings: 'Training Records',
+                    confirmDelete: 'Confirm Deletion',
+                    confirmDeleteHorse: 'Are you sure you want to delete this horse?',
+                    confirmDeleteTraining: 'Are you sure you want to delete this training record?',
+                    yesDelete: 'YES, DELETE',
+                    chooseImage: 'Choose image',
+                    fillRequired: 'Please fill in name and IS number',
+                    editHorse: 'Edit Horse',
+                    addNewHorse: 'Add New Horse',
+                    deleteImage: 'Delete image',
+                    confirmDeleteImage: 'Are you sure you want to delete this image?',
+                    noHorses: 'No horses registered yet',
+                    home: 'Home',
+                    add: 'Add'
+                }
+            };
+            
+            const t = translations[language];
             
             useEffect(() => {
                 try {
                     const saved = localStorage.getItem('horses');
                     if (saved) setHorses(JSON.parse(saved));
-                } catch (e) { console.error(e); }
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                }
             }, []);
             
             useEffect(() => {
                 try {
                     localStorage.setItem('horses', JSON.stringify(horses));
-                } catch (e) { console.error(e); }
+                } catch (error) {
+                    console.error('Error saving data:', error);
+                }
             }, [horses]);
             
-            const addHorse = (e) => {
-                e.preventDefault();
-                const data = new FormData(e.target);
-                setHorses([...horses, {
-                    id: Date.now(),
-                    name: data.get('name'),
-                    isNumber: data.get('isNumber'),
-                    trainings: []
-                }]);
-                setView('list');
+            const getCurrentHorse = () => horses.find(h => h.id === selectedHorseId);
+            
+            const addHorse = (horseData) => {
+                const newHorse = { ...horseData, id: Date.now(), trainings: [], shoeings: [] };
+                setHorses([...horses, newHorse]);
+                setCurrentView('list');
+            };
+            
+            const updateHorse = (id, horseData) => {
+                setHorses(horses.map(h => h.id === id ? { ...h, ...horseData } : h));
+                setEditingHorseId(null);
+            };
+            
+            const deleteHorse = (id) => {
+                setHorses(horses.filter(h => h.id !== id));
+                setConfirmDelete(null);
+                setCurrentView('list');
+            };
+            
+            const addTraining = (horseId, training) => {
+                setHorses(horses.map(h => h.id === horseId ? { ...h, trainings: [...(h.trainings || []), { ...training, id: Date.now() }] } : h));
+            };
+            
+            const deleteTraining = (horseId, trainingId) => {
+                setHorses(horses.map(h => h.id === horseId ? { ...h, trainings: h.trainings.filter(t => t.id !== trainingId) } : h));
+                setConfirmDelete(null);
+            };
+            
+            const addShoeing = (horseId, date) => {
+                setHorses(horses.map(h => h.id === horseId ? { ...h, shoeings: [...(h.shoeings || []), { id: Date.now(), date }] } : h));
+            };
+            
+            const getWeeksSinceShoeing = (shoeings) => {
+                if (!shoeings || shoeings.length === 0) return null;
+                const lastShoeing = new Date(Math.max(...shoeings.map(s => new Date(s.date))));
+                return Math.floor((new Date() - lastShoeing) / (7 * 24 * 60 * 60 * 1000));
+            };
+            
+            const getWeekDaysStatus = (trainings) => {
+                const today = new Date();
+                const weekStart = new Date(today);
+                const dayOfWeek = today.getDay();
+                const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+                weekStart.setDate(today.getDate() + diff);
+                weekStart.setHours(0, 0, 0, 0);
+                
+                const daysStatus = [];
+                for (let i = 0; i < 7; i++) {
+                    const day = new Date(weekStart);
+                    day.setDate(weekStart.getDate() + i);
+                    const hasTraining = trainings && trainings.some(t => new Date(t.date).toDateString() === day.toDateString());
+                    const isFuture = day > today;
+                    daysStatus.push({ date: day, hasTraining, isFuture });
+                }
+                return daysStatus;
+            };
+            
+            const getThisWeekTrainingMinutes = (trainings) => {
+                if (!trainings) return 0;
+                const today = new Date();
+                const weekStart = new Date(today);
+                const dayOfWeek = today.getDay();
+                const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+                weekStart.setDate(today.getDate() + diff);
+                weekStart.setHours(0, 0, 0, 0);
+                return trainings.filter(t => new Date(t.date) >= weekStart && new Date(t.date) <= today).reduce((sum, t) => sum + (parseInt(t.duration) || 0), 0);
+            };
+            
+            const getTotalTrainingMinutes = (trainings) => {
+                if (!trainings) return 0;
+                return trainings.reduce((sum, t) => sum + (parseInt(t.duration) || 0), 0);
+            };
+            
+            const exportData = (includeAll) => {
+                const dataToExport = includeAll ? horses : horses.map(h => ({ name: h.name, isNumber: h.isNumber, image: h.image }));
+                const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `hross-data-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                setShowExportMenu(false);
+            };
+            
+            const importData = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const imported = JSON.parse(event.target.result);
+                            if (window.confirm('Ertu viss um að þú viljir flytja inn gögn?')) {
+                                setHorses([...horses, ...imported.map(h => ({ ...h, id: Date.now() + Math.random() }))]);
+                            }
+                        } catch (error) {
+                            alert('Villa við að lesa skrá');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            
+            const HorseForm = ({ horse, onCancel }) => {
+                const [formData, setFormData] = useState(horse || { name: '', isNumber: '', image: '' });
+                const [imageHovered, setImageHovered] = useState(false);
+                const [confirmImageDelete, setConfirmImageDelete] = useState(false);
+                
+                const handleImageUpload = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => setFormData({ ...formData, image: reader.result });
+                        reader.readAsDataURL(file);
+                    }
+                };
+                
+                const handleDeleteImage = () => {
+                    setConfirmImageDelete(false);
+                    setFormData({ ...formData, image: '' });
+                    setImageHovered(false);
+                };
+                
+                const handleSave = () => {
+                    if (formData.name && formData.isNumber) {
+                        horse ? updateHorse(horse.id, formData) : addHorse(formData);
+                    } else {
+                        alert(t.fillRequired);
+                    }
+                };
+                
+                return (
+                    <div className="card">
+                        {confirmImageDelete && (
+                            <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title">{t.confirmDelete}</h5>
+                                        </div>
+                                        <div className="modal-body">{t.confirmDeleteImage}</div>
+                                        <div className="modal-footer">
+                                            <button className="btn btn-danger" onClick={handleDeleteImage}>{t.yesDelete}</button>
+                                            <button className="btn btn-secondary" onClick={() => setConfirmImageDelete(false)}>{t.cancel}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        <h2 className="mb-4">{horse ? t.editHorse : t.addNewHorse}</h2>
+                        
+                        <div className="mb-3">
+                            <label className="form-label">{t.name}</label>
+                            <input type="text" className="form-control" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                        </div>
+                        
+                        <div className="mb-3">
+                            <label className="form-label">{t.isNumber}</label>
+                            <input type="text" className="form-control" value={formData.isNumber} onChange={(e) => setFormData({ ...formData, isNumber: e.target.value })} />
+                        </div>
+                        
+                        <div className="mb-3">
+                            <label className="form-label">{t.image}</label>
+                            <div className="d-flex align-items-center gap-3">
+                                <input type="file" accept="image/*" onChange={handleImageUpload} className="d-none" id="image-upload" />
+                                <label htmlFor="image-upload" className="btn btn-primary">
+                                    <Camera size={20} className="me-2" />
+                                    {t.chooseImage}
+                                </label>
+                                {formData.image && (
+                                    <div className="image-preview" onMouseEnter={() => setImageHovered(true)} onMouseLeave={() => setImageHovered(false)}>
+                                        <img src={formData.image} alt="Preview" className="rounded" style={{width: '80px', height: '80px', objectFit: 'cover'}} />
+                                        {imageHovered && (
+                                            <button onClick={() => setConfirmImageDelete(true)} className="image-delete-btn">×</button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        
+                        <div className="d-flex gap-2">
+                            <button onClick={handleSave} className="btn btn-success">{t.save}</button>
+                            <button onClick={onCancel} className="btn btn-secondary">{t.cancel}</button>
+                        </div>
+                    </div>
+                );
+            };
+            
+            const HorseDetail = () => {
+                const horse = getCurrentHorse();
+                const [newShoeing, setNewShoeing] = useState('');
+                const [newTraining, setNewTraining] = useState({ date: '', type: '', notes: '', duration: '' });
+                
+                if (!horse) return null;
+                
+                const weeksSinceShoeing = getWeeksSinceShoeing(horse.shoeings);
+                const thisWeekMinutes = getThisWeekTrainingMinutes(horse.trainings);
+                const totalMinutes = getTotalTrainingMinutes(horse.trainings);
+                const weekDays = getWeekDaysStatus(horse.trainings);
+                
+                const handleAddTraining = () => {
+                    if (newTraining.date && newTraining.type) {
+                        addTraining(horse.id, newTraining);
+                        setNewTraining({ date: '', type: '', notes: '', duration: '' });
+                    }
+                };
+                
+                return (
+                    <div>
+                        <button onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }} className="btn btn-secondary mb-3">
+                            ← {t.back}
+                        </button>
+                        
+                        <div className="card mb-3">
+                            <div className="card-body">
+                                <div className="d-flex gap-3 mb-3">
+                                    {horse.image && <img src={horse.image} alt={horse.name} className="rounded" style={{width: '120px', height: '120px', objectFit: 'cover'}} />}
+                                    <div className="flex-fill">
+                                        <h2>{horse.name}</h2>
+                                        <p className="text-muted">{t.isNumber}: {horse.isNumber}</p>
+                                        <div className="d-flex gap-2 mb-2">
+                                            {weekDays.map((day, idx) => (
+                                                <div key={idx} className={`week-day ${day.isFuture ? 'day-future' : day.hasTraining ? 'day-trained' : 'day-not-trained'}`}>
+                                                    {['M', 'Þ', 'M', 'F', 'F', 'L', 'S'][idx]}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="d-flex gap-3">
+                                            <span className="badge bg-primary"><Clock size={14} /> {thisWeekMinutes}m</span>
+                                            <span className="badge bg-success"><Clock size={14} /> {totalMinutes}m</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button onClick={() => setEditingHorseId(horse.id)} className="btn btn-sm btn-primary me-2">
+                                            <Edit2 size={16} />
+                                        </button>
+                                        <button onClick={() => setConfirmDelete({ type: 'horse', horseId: horse.id })} className="btn btn-sm btn-danger">
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                {weeksSinceShoeing !== null && weeksSinceShoeing >= 6 && (
+                                    <div className={`alert ${weeksSinceShoeing >= 8 ? 'alert-danger' : 'alert-warning'}`}>
+                                        {weeksSinceShoeing >= 8 ? t.needsShoeing : `${weeksSinceShoeing} vikur síðan járning`}
+                                    </div>
+                                )}
+                                
+                                <div className="mb-3">
+                                    <h5>{t.shoeing}</h5>
+                                    <div className="input-group">
+                                        <input type="date" className="form-control" value={newShoeing} onChange={(e) => setNewShoeing(e.target.value)} />
+                                        <button className="btn btn-success" onClick={() => { if(newShoeing) { addShoeing(horse.id, newShoeing); setNewShoeing(''); } }}>
+                                            {t.recordShoeing}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="card mb-3">
+                            <div className="card-body">
+                                <h5>{t.newTraining}</h5>
+                                <div className="row g-2">
+                                    <div className="col-md-6">
+                                        <label className="form-label">{t.date}</label>
+                                        <input type="date" className="form-control" value={newTraining.date} onChange={(e) => setNewTraining({...newTraining, date: e.target.value})} />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label">{t.type}</label>
+                                        <select className="form-select" value={newTraining.type} onChange={(e) => setNewTraining({...newTraining, type: e.target.value})}>
+                                            <option value="">{t.selectType}</option>
+                                            {trainingTypes.map(type => <option key={type} value={type}>{type}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label">{t.time}</label>
+                                        <input type="number" className="form-control" value={newTraining.duration} onChange={(e) => setNewTraining({...newTraining, duration: e.target.value})} />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label">{t.notes}</label>
+                                        <input type="text" className="form-control" value={newTraining.notes} onChange={(e) => setNewTraining({...newTraining, notes: e.target.value})} />
+                                    </div>
+                                    <div className="col-12">
+                                        <button className="btn btn-success w-100" onClick={handleAddTraining}>{t.recordTraining}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="card">
+                            <div className="card-body">
+                                <h5>{t.trainings}</h5>
+                                {horse.trainings && horse.trainings.length > 0 ? (
+                                    <div className="list-group">
+                                        {horse.trainings.sort((a, b) => new Date(b.date) - new Date(a.date)).map(tr => (
+                                            <div key={tr.id} className="list-group-item">
+                                                <div className="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <strong>{new Date(tr.date).toLocaleDateString('is-IS')}</strong> - <span className="text-primary">{tr.type}</span>
+                                                        {tr.duration && <span className="text-success ms-2">({tr.duration}m)</span>}
+                                                        {tr.notes && <p className="text-muted small mb-0">{tr.notes}</p>}
+                                                    </div>
+                                                    <button className="btn btn-sm btn-danger" onClick={() => setConfirmDelete({ type: 'training', horseId: horse.id, itemId: tr.id })}>
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-muted text-center">Engar þjálfunarskráningar enn</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
             };
             
             return (
-                <div className="container">
-                    <h1 className="title">Hrossaþjálfun v3.0</h1>
-                    
-                    {view === 'list' ? (
-                        <div>
-                            <button onClick={() => setView('add')} className="btn btn-green btn-full mb-1">
-                                + Skrá nýtt hross
-                            </button>
-                            
-                            {horses.map(h => (
-                                <div key={h.id} className="horse-card">
-                                    <h3 style={{fontSize:'1.25rem', fontWeight:'bold'}}>{h.name}</h3>
-                                    <p style={{color:'#666'}}>IS-númer: {h.isNumber}</p>
-                                    <p style={{color:'#999', fontSize:'0.875rem'}}>{h.trainings?.length || 0} skráningar</p>
+                <div className="container py-4">
+                    {confirmDelete && (
+                        <div className="modal show d-block" style={{backgroundColor: 'rgba(0,0,0,0.5)'}}>
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title">{t.confirmDelete}</h5>
+                                    </div>
+                                    <div className="modal-body">
+                                        {confirmDelete.type === 'horse' && t.confirmDeleteHorse}
+                                        {confirmDelete.type === 'training' && t.confirmDeleteTraining}
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-danger" onClick={() => {
+                                            if (confirmDelete.type === 'horse') deleteHorse(confirmDelete.horseId);
+                                            else if (confirmDelete.type === 'training') deleteTraining(confirmDelete.horseId, confirmDelete.itemId);
+                                        }}>{t.yesDelete}</button>
+                                        <button className="btn btn-secondary" onClick={() => setConfirmDelete(null)}>{t.cancel}</button>
+                                    </div>
                                 </div>
-                            ))}
-                            
-                            {horses.length === 0 && (
-                                <p style={{textAlign:'center', color:'#999', padding:'2rem'}}>Engin hross skráð</p>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="card">
-                            <h2 style={{fontSize:'1.5rem', fontWeight:'bold', marginBottom:'1rem'}}>Skrá nýtt hross</h2>
-                            <form onSubmit={addHorse}>
-                                <div className="mb-1">
-                                    <label style={{fontWeight:'500'}}>Nafn</label>
-                                    <input name="name" required className="input" />
-                                </div>
-                                <div className="mb-1">
-                                    <label style={{fontWeight:'500'}}>IS-númer</label>
-                                    <input name="isNumber" required className="input" />
-                                </div>
-                                <div className="gap">
-                                    <button type="submit" className="btn btn-green">Vista</button>
-                                    <button type="button" onClick={() => setView('list')} className="btn btn-gray">Hætta við</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     )}
+                    
+                    <div className="text-center mb-4">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <div></div>
+                            <div>
+                                <h1>{t.title}</h1>
+                                <small className="text-muted">{APP_VERSION}</small>
+                            </div>
+                            <div className="btn-group btn-group-sm">
+                                <button className={`btn ${language === 'IS' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => setLanguage('IS')}>IS</button>
+                                <button className={`btn ${language === 'EN' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => setLanguage('EN')}>EN</button>
+                            </div>
+                        </div>
+                        
+                        <div className="d-flex justify-content-center gap-2 mb-3 d-none d-md-flex">
+                            <div className="dropdown">
+                                <button className="btn btn-primary dropdown-toggle" onClick={() => setShowExportMenu(!showExportMenu)}>
+                                    <Download size={18} /> {t.export}
+                                </button>
+                                {showExportMenu && (
+                                    <div className="dropdown-menu show">
+                                        <button className="dropdown-item" onClick={() => exportData(false)}>Nafn, IS-númer, Mynd</button>
+                                        <button className="dropdown-item" onClick={() => exportData(true)}>Allt (með þjálfun)</button>
+                                    </div>
+                                )}
+                            </div>
+                            <label className="btn btn-success">
+                                <Upload size={18} /> {t.import}
+                                <input type="file" accept=".json" onChange={importData} className="d-none" />
+                            </label>
+                        </div>
+                    </div>
+                    
+                    {editingHorseId ? (
+                        <HorseForm horse={horses.find(h => h.id === editingHorseId)} onCancel={() => setEditingHorseId(null)} />
+                    ) : currentView === 'add' ? (
+                        <HorseForm onCancel={() => setCurrentView('list')} />
+                    ) : currentView === 'detail' ? (
+                        <HorseDetail />
+                    ) : (
+                        <div>
+                            <button onClick={() => setCurrentView('add')} className="btn btn-success w-100 mb-3 d-md-inline-block" style={{maxWidth: '400px'}}>
+                                <Plus size={24} /> {t.addHorse}
+                            </button>
+                            
+                            <div className="row g-3">
+                                {horses.map(horse => {
+                                    const weeksSinceShoeing = getWeeksSinceShoeing(horse.shoeings);
+                                    const weekDays = getWeekDaysStatus(horse.trainings);
+                                    const thisWeekMinutes = getThisWeekTrainingMinutes(horse.trainings);
+                                    const totalMinutes = getTotalTrainingMinutes(horse.trainings);
+                                    
+                                    return (
+                                        <div key={horse.id} className="col-12 col-md-6 col-lg-4">
+                                            <div className="card horse-card" onClick={() => { setSelectedHorseId(horse.id); setCurrentView('detail'); }}>
+                                                <div className="card-body">
+                                                    <div className="d-flex gap-2 mb-2">
+                                                        {horse.image && <img src={horse.image} alt={horse.name} className="rounded" style={{width: '60px', height: '60px', objectFit: 'cover'}} />}
+                                                        <div className="flex-fill">
+                                                            <h5 className="card-title mb-1">{horse.name}</h5>
+                                                            <p className="card-text small text-muted mb-0">{t.isNumber}: {horse.isNumber}</p>
+                                                            <p className="card-text small text-muted">{horse.trainings?.length || 0} {horse.trainings?.length === 1 ? t.recording : t.recordings}</p>
+                                                        </div>
+                                                        {weeksSinceShoeing !== null && (
+                                                            <div className={`badge ${weeksSinceShoeing >= 8 ? 'bg-danger' : weeksSinceShoeing >= 6 ? 'bg-warning' : 'bg-success'}`} style={{height: 'fit-content'}}>
+                                                                {weeksSinceShoeing}v
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div className="d-flex gap-1 mb-2">
+                                                        {weekDays.map((day, idx) => (
+                                                            <div key={idx} className={`week-day ${day.isFuture ? 'day-future' : day.hasTraining ? 'day-trained' : 'day-not-trained'}`} style={{width: '24px', height: '24px', fontSize: '10px'}}>
+                                                                {['M', 'Þ', 'M', 'F', 'F', 'L', 'S'][idx]}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="d-flex gap-2">
+                                                        <small className="text-primary"><Clock size={12} /> {thisWeekMinutes}m</small>
+                                                        <small className="text-success"><Clock size={12} /> {totalMinutes}m</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            
+                            {horses.length === 0 && (
+                                <div className="text-center text-muted py-5">{t.noHorses}</div>
+                            )}
+                        </div>
+                    )}
+                    
+                    {/* Bottom Navigation - Mobile */}
+                    <div className="bottom-nav d-md-none">
+                        <div className="container">
+                            <div className="row text-center">
+                                <div className="col" onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }}>
+                                    <div className="text-primary">🏠</div>
+                                    <small>{t.home}</small>
+                                </div>
+                                <div className="col" onClick={() => setCurrentView('add')}>
+                                    <div className="text-success"><Plus size={32} /></div>
+                                    <small>{t.add}</small>
+                                </div>
+                                <div className="col" onClick={() => setShowExportMenu(!showExportMenu)}>
+                                    <Download size={24} />
+                                    <div><small>{t.export}</small></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         };
