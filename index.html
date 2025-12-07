@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hrossaþjálfun v3.0.1</title>
+    <title>Hrossaþjálfun v3.0.2</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -165,7 +165,7 @@
             const [confirmDelete, setConfirmDelete] = useState(null);
             const [language, setLanguage] = useState('IS');
             
-            const APP_VERSION = 'v3.0.1';
+            const APP_VERSION = 'v3.0.2';
             
             const trainingTypes = ['Tölt', 'Brokk', 'Fet', 'Stökk', 'Skeið', 'Vinna í reiðhöll', 'Útreiðar', 'Rekstur', 'Annað'];
             
@@ -199,6 +199,7 @@
                     confirmDelete: 'Staðfesta eyðingu',
                     confirmDeleteHorse: 'Ertu viss um að þú viljir eyða þessu rossi?',
                     confirmDeleteTraining: 'Ertu viss um að þú viljir eyða þessari þjálfunarskráningu?',
+                    confirmDeleteShoeing: 'Ertu viss um að þú viljir eyða þessari járningu?',
                     yesDelete: 'JÁ, EYÐA',
                     chooseImage: 'Velja mynd',
                     fillRequired: 'Vinsamlegast fylltu út nafn og IS-númer',
@@ -239,6 +240,7 @@
                     confirmDelete: 'Confirm Deletion',
                     confirmDeleteHorse: 'Are you sure you want to delete this horse?',
                     confirmDeleteTraining: 'Are you sure you want to delete this training record?',
+                    confirmDeleteShoeing: 'Are you sure you want to delete this shoeing record?',
                     yesDelete: 'YES, DELETE',
                     chooseImage: 'Choose image',
                     fillRequired: 'Please fill in name and IS number',
@@ -301,6 +303,11 @@
             
             const addShoeing = (horseId, date) => {
                 setHorses(horses.map(h => h.id === horseId ? { ...h, shoeings: [...(h.shoeings || []), { id: Date.now(), date }] } : h));
+            };
+            
+            const deleteShoeing = (horseId, shoeingId) => {
+                setHorses(horses.map(h => h.id === horseId ? { ...h, shoeings: h.shoeings.filter(s => s.id !== shoeingId) } : h));
+                setConfirmDelete(null);
             };
             
             const getWeeksSinceShoeing = (shoeings) => {
@@ -535,8 +542,15 @@
                                             <small className="text-muted">Járningar:</small>
                                             <div className="list-group list-group-flush">
                                                 {horse.shoeings.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5).map(sh => (
-                                                    <div key={sh.id} className="list-group-item px-2 py-1">
+                                                    <div key={sh.id} className="list-group-item px-2 py-1 d-flex justify-content-between align-items-center">
                                                         <small>{new Date(sh.date).toLocaleDateString('is-IS')}</small>
+                                                        <button 
+                                                            className="btn btn-sm btn-danger py-0 px-2" 
+                                                            onClick={() => setConfirmDelete({ type: 'shoeing', horseId: horse.id, itemId: sh.id })}
+                                                            style={{fontSize: '12px'}}
+                                                        >
+                                                            <Trash2 size={12} />
+                                                        </button>
                                                     </div>
                                                 ))}
                                             </div>
@@ -617,11 +631,13 @@
                                     <div className="modal-body">
                                         {confirmDelete.type === 'horse' && t.confirmDeleteHorse}
                                         {confirmDelete.type === 'training' && t.confirmDeleteTraining}
+                                        {confirmDelete.type === 'shoeing' && t.confirmDeleteShoeing}
                                     </div>
                                     <div className="modal-footer">
                                         <button className="btn btn-danger" onClick={() => {
                                             if (confirmDelete.type === 'horse') deleteHorse(confirmDelete.horseId);
                                             else if (confirmDelete.type === 'training') deleteTraining(confirmDelete.horseId, confirmDelete.itemId);
+                                            else if (confirmDelete.type === 'shoeing') deleteShoeing(confirmDelete.horseId, confirmDelete.itemId);
                                         }}>{t.yesDelete}</button>
                                         <button className="btn btn-secondary" onClick={() => setConfirmDelete(null)}>{t.cancel}</button>
                                     </div>
