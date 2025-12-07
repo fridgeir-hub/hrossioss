@@ -449,7 +449,7 @@
                         
                         <div className="d-flex gap-2">
                             <button onClick={handleSave} className="btn btn-success">{t.save}</button>
-                            <button onClick={onCancel} className="btn btn-secondary">{t.cancel}</button>
+                            <button onClick={onCancel} className="btn btn-secondary d-none d-md-inline-block">{t.cancel}</button>
                         </div>
                     </div>
                 );
@@ -476,7 +476,7 @@
                 
                 return (
                     <div>
-                        <button onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }} className="btn btn-secondary mb-3">
+                        <button onClick={() => { setCurrentView('list'); setSelectedHorseId(null); }} className="btn btn-secondary mb-3 d-none d-md-inline-block">
                             ← {t.back}
                         </button>
                         
@@ -651,7 +651,7 @@
                         <HorseDetail />
                     ) : (
                         <div>
-                            <button onClick={() => setCurrentView('add')} className="btn btn-success w-100 mb-3 d-md-inline-block" style={{maxWidth: '400px'}}>
+                            <button onClick={() => setCurrentView('add')} className="btn btn-success w-100 mb-3 d-none d-md-inline-block" style={{maxWidth: '400px'}}>
                                 <Plus size={24} /> {t.addHorse}
                             </button>
                             
