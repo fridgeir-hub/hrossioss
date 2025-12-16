@@ -9,3 +9,10 @@ v3.0.4 - Lagaði staðsetningu Edit/Delete hnappa
 v3.0.5 - Færði hnappana neðan við upplýsingar
 v3.0.6 - Setti hnappana í sömu línu og nafnið
 v3.0.7 - Lagaði orðalag fyrir járningu áminningu
+
+
+Version History:
+
+v3.0.0-v3.0.7 - Grunnútgáfa og lagfæringar
+v3.1.0 - Bætti við járningu upplýsingum
+v3.1.1 - Rétt stærðir og aðskildar þykktir fyrir framan og aftan
