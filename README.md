@@ -16,3 +16,9 @@ Version History:
 v3.0.0-v3.0.7 - Grunnútgáfa og lagfæringar
 v3.1.0 - Bætti við járningu upplýsingum
 v3.1.1 - Rétt stærðir og aðskildar þykktir fyrir framan og aftan
+
+📝 Version History:
+
+v3.0.0-v3.0.7 - Grunnútgáfa
+v3.1.0-v3.1.1 - Járningu eiginleikar
+v3.1.2 - Lagaði mynd compression fyrir betri vistun
